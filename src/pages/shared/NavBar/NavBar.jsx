@@ -51,11 +51,11 @@ const NavBar = () => {
         </>
     );
     return (
-        <div className="drawer">
+        <div className="drawer h-20 sticky top-0 z-50">
             <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
             <div className="drawer-content flex flex-col">
                 {/* Navbar */}
-                <div className="w-full navbar">
+                <div className="w-full navbar p-0">
                     <div className="flex-none lg:hidden">
                         <label
                             htmlFor="my-drawer-3"
@@ -77,7 +77,7 @@ const NavBar = () => {
                             </svg>
                         </label>
                     </div>
-                    <div className="flex-1 px-2 mx-2">
+                    <div className="flex-1 mx-2">
                         <img src={logo} alt="logo" />
                     </div>
                     <div className="flex-none hidden lg:block">
@@ -88,7 +88,7 @@ const NavBar = () => {
                     </div>
                 </div>
             </div>
-            <div className="drawer-side">
+            <div className="drawer-side z-50">
                 <label
                     htmlFor="my-drawer-3"
                     aria-label="close sidebar"
