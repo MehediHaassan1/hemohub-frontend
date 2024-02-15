@@ -1,0 +1,21 @@
+@import url("https://fonts.googleapis.com/css2?family=Gantari:ital,wght@0,100..900;1,100..900&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Gantari", sans-serif;
+}
+
+@layer base {
+    :root {
+        --color-text: 51 35 78;
+        --color-background: 233 22 8;
+        --color-primary: 189 45 9;
+        --color-secondary: 140 18 16;
+        --color-accent: 99 14 52;
+    }
+}
