@@ -14,7 +14,7 @@ const Data = () => {
             <div className="max-w-screen-xl mx-auto grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">
                 <div className="bg-white w-56 h-56 text-center flex items-center justify-center">
                     <div>
-                        <FaSmile className="h-16 w-16 mx-auto" />
+                        <FaSmile className="h-16 w-16 mx-auto text-accent" />
                         <h1 className="text-5xl font-extrabold text-black my-3">
                             1215
                         </h1>
@@ -26,7 +26,7 @@ const Data = () => {
 
                 <div className="bg-white w-56 h-56 text-center flex items-center justify-center">
                     <div>
-                        <BiSolidDonateBlood className="h-16 w-16 mx-auto" />
+                        <BiSolidDonateBlood className="h-16 w-16 mx-auto text-accent" />
                         <h1 className="text-5xl font-extrabold text-black my-3">
                             835
                         </h1>
@@ -38,7 +38,7 @@ const Data = () => {
 
                 <div className="bg-white w-56 h-56 text-center flex items-center justify-center">
                     <div>
-                        <FaUsers className="h-16 w-16 mx-auto" />
+                        <FaUsers className="h-16 w-16 mx-auto text-accent" />
                         <h1 className="text-5xl font-extrabold text-black my-3">
                             1568
                         </h1>
@@ -50,7 +50,7 @@ const Data = () => {
 
                 <div className="bg-white w-56 h-56 text-center flex items-center justify-center">
                     <div>
-                        <RiAwardFill className="h-16 w-16 mx-auto" />
+                        <RiAwardFill className="h-16 w-16 mx-auto text-accent" />
                         <h1 className="text-5xl font-extrabold text-black my-3">
                             11
                         </h1>
