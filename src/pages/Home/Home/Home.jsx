@@ -2,6 +2,7 @@ import Banner from "../Banner/Banner";
 import Campaigns from "../Campaigns/Campaigns";
 import Data from "../Data/Data";
 import Process from "../Process/Process";
+import Volunteers from "../Volunteers/Volunteers";
 
 const Home = () => {
     return (
@@ -10,6 +11,7 @@ const Home = () => {
             <Data></Data>
             <Process></Process>
             <Campaigns></Campaigns>
+            <Volunteers></Volunteers>
         </div>
     );
 };
