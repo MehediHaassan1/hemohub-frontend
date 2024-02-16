@@ -2,6 +2,7 @@ import Banner from "../Banner/Banner";
 import Campaigns from "../Campaigns/Campaigns";
 import Contact from "../Contact/Contact";
 import Data from "../Data/Data";
+import Donate from "../Donate/Donate";
 import Faq from "../Faq/Faq";
 import Gallery from "../Gallery/Gallery";
 import Process from "../Process/Process";
@@ -17,6 +18,7 @@ const Home = () => {
             <Volunteers></Volunteers>
             <Gallery></Gallery>
             <Faq></Faq>
+            <Donate></Donate>
             <Contact></Contact>
         </div>
     );
