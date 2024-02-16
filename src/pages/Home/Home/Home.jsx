@@ -1,5 +1,6 @@
 import Banner from "../Banner/Banner";
 import Campaigns from "../Campaigns/Campaigns";
+import Contact from "../Contact/Contact";
 import Data from "../Data/Data";
 import Faq from "../Faq/Faq";
 import Gallery from "../Gallery/Gallery";
@@ -16,6 +17,7 @@ const Home = () => {
             <Volunteers></Volunteers>
             <Gallery></Gallery>
             <Faq></Faq>
+            <Contact></Contact>
         </div>
     );
 };
