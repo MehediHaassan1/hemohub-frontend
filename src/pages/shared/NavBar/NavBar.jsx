@@ -27,11 +27,6 @@ const NavBar = () => {
                             Login
                         </NavLink>
                     </li>
-                    <li>
-                        <NavLink to="/registration" className="text-lg">
-                            Registration
-                        </NavLink>
-                    </li>
                 </>
             )}
             {login && (
