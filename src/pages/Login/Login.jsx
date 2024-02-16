@@ -59,7 +59,7 @@ const Login = () => {
                                 <p className="md:text-lg">
                                     Don't have an account?{" "}
                                     <Link
-                                        to="/registration"
+                                        to="/register-account"
                                         className="link link-hover"
                                     >
                                         Registration
