@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import GoogleLogin from "../shared/GoogleLogin/GoogleLogin";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 const Register = () => {
     const {
@@ -18,7 +19,11 @@ const Register = () => {
         const password = data.password;
         const c_password = data.c_password;
         if (password !== c_password) {
-            alert("password did not matched");
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Password did not matched!",
+            });
             return;
         }
         console.log(data);
