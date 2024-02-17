@@ -1,7 +1,34 @@
 import { Link } from "react-router-dom";
 import GoogleLogin from "../shared/GoogleLogin/GoogleLogin";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
 
 const Login = () => {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
+    const [showPassword, setShowPassword] = useState(false);
+    const handleShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
+
+    const onSubmit = (data) => {
+        // const password = data.password;
+        // const c_password = data.c_password;
+        // if (password !== c_password) {
+        //     Swal.fire({
+        //         icon: "error",
+        //         title: "Oops...",
+        //         text: "Password did not matched!",
+        //     });
+        //     return;
+        // }
+        console.log(data);
+    };
+
     return (
         <div className="max-w-screen-xl mx-auto">
             <div className="min-h-screen  py-6 flex flex-col justify-center sm:py-12">
@@ -14,7 +41,10 @@ const Login = () => {
                                     Login
                                 </h1>
                             </div>
-                            <div className="divide-y divide-gray-200">
+                            <form
+                                onSubmit={handleSubmit(onSubmit)}
+                                className="divide-y divide-gray-200"
+                            >
                                 <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
                                     <div className="relative">
                                         <input
@@ -24,6 +54,18 @@ const Login = () => {
                                             type="text"
                                             className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
                                             placeholder="Email address"
+                                            {...register("email", {
+                                                required: {
+                                                    value: true,
+                                                    message:
+                                                        "Email is required",
+                                                },
+                                                pattern: {
+                                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                                    message:
+                                                        "Invalid email address",
+                                                },
+                                            })}
                                         />
                                         <label
                                             htmlFor="email"
@@ -31,15 +73,31 @@ const Login = () => {
                                         >
                                             Email Address
                                         </label>
+                                        <label className="block my-2 text-sm font-bold text-red-500">
+                                            {errors.email && (
+                                                <p>{errors.email.message}</p>
+                                            )}
+                                        </label>
                                     </div>
                                     <div className="relative">
                                         <input
                                             autoComplete="off"
                                             id="password"
                                             name="password"
-                                            type="password"
+                                            type={
+                                                showPassword
+                                                    ? "text"
+                                                    : "password"
+                                            }
                                             className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
                                             placeholder="Password"
+                                            {...register("password", {
+                                                required: {
+                                                    value: true,
+                                                    message:
+                                                        "Password is required",
+                                                },
+                                            })}
                                         />
                                         <label
                                             htmlFor="password"
@@ -47,14 +105,39 @@ const Login = () => {
                                         >
                                             Password
                                         </label>
+                                        <label className="block my-2 text-sm font-bold text-red-500">
+                                            {errors.password && (
+                                                <p>{errors.password.message}</p>
+                                            )}
+                                        </label>
                                     </div>
+                                    <p
+                                        className="flex items-center gap-2 cursor-pointer w-fit mb-2"
+                                        onClick={handleShowPassword}
+                                    >
+                                        <input
+                                            id="showPassword"
+                                            type="checkbox"
+                                            checked={
+                                                showPassword ? true : false
+                                            }
+                                            className="checkbox checkbox-xs "
+                                            readOnly
+                                        />
+                                        <span
+                                            htmlFor="showPassword"
+                                            className="block text-sm font-bold text-primary"
+                                        >
+                                            Show Password
+                                        </span>
+                                    </p>
                                     <div className="relative">
                                         <button className="bg-accent text-white rounded px-2 py-1">
                                             login
                                         </button>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                             <div className="text-primary">
                                 <p className="md:text-lg">
                                     Don't have an account?{" "}
