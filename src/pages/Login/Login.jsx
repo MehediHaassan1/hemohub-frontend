@@ -1,10 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import GoogleLogin from "../shared/GoogleLogin/GoogleLogin";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
+import { USER_CONTEXT } from "../../context/AuthProviders";
 
 const Login = () => {
+    const { loginUser } = useContext(USER_CONTEXT);
+    const navigate = useNavigate();
+
     const {
         register,
         handleSubmit,
@@ -26,7 +30,29 @@ const Login = () => {
         //     });
         //     return;
         // }
-        console.log(data);
+        // console.log(data);
+        loginUser(data.email, data.password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                if (user) {
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Login successful",
+                        showConfirmButton: false,
+                        timer: 2000,
+                    });
+                    navigate("/");
+                }
+            })
+            .catch((error) => {
+                const errorMessage = error.message;
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: errorMessage,
+                });
+            });
     };
 
     return (

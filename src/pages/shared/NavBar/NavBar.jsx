@@ -1,8 +1,33 @@
 import { NavLink } from "react-router-dom";
 import logo from "../../../assets/logo.svg";
+import { useContext } from "react";
+import { USER_CONTEXT } from "../../../context/AuthProviders";
+import Swal from "sweetalert2";
 
 const NavBar = () => {
-    const login = false;
+    const { user, logOutUser } = useContext(USER_CONTEXT);
+
+    const handleLogOut = () => {
+        logOutUser()
+            .then(() => {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Logout successful",
+                    showConfirmButton: false,
+                    timer: 2000,
+                });
+            })
+            .catch((error) => {
+                const errorMessage = error.message;
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: errorMessage,
+                });
+            });
+    };
+
     const navLinks = (
         <>
             <li>
@@ -20,7 +45,7 @@ const NavBar = () => {
                     Blog
                 </NavLink>
             </li>
-            {!login && (
+            {!user && (
                 <>
                     <li>
                         <NavLink to="/login" className="text-lg">
@@ -29,7 +54,7 @@ const NavBar = () => {
                     </li>
                 </>
             )}
-            {login && (
+            {user && (
                 <>
                     <li>
                         <NavLink to="/dashboard" className="text-lg">
@@ -40,6 +65,9 @@ const NavBar = () => {
                         <NavLink to="/donate" className="text-lg">
                             Donate
                         </NavLink>
+                    </li>
+                    <li onClick={handleLogOut}>
+                        <p className="text-lg">Logout</p>
                     </li>
                 </>
             )}

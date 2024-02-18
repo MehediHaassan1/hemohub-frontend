@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import Banner from "../Banner/Banner";
 import Campaigns from "../Campaigns/Campaigns";
 import Contact from "../Contact/Contact";
