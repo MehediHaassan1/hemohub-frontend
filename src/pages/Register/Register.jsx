@@ -1,16 +1,38 @@
 import { Link } from "react-router-dom";
 import GoogleLogin from "../shared/GoogleLogin/GoogleLogin";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import usePublicApi from "../../hooks/usePublicApi";
+import { USER_CONTEXT } from "../../context/AuthProviders";
 
 const Register = () => {
+    const publicApi = usePublicApi();
+    const { createUser } = useContext(USER_CONTEXT);
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
     const [showPassword, setShowPassword] = useState(false);
+    const [divisions, setDivisions] = useState([]);
+    const [districts, setDistricts] = useState([]);
+    const [upazillas, setUpazillas] = useState([]);
+
+    useEffect(() => {
+        publicApi
+            .get("/api/v1/divisions")
+            .then((res) => setDivisions(res.data));
+
+        publicApi
+            .get("/api/v1/districts")
+            .then((res) => setDistricts(res.data));
+
+        publicApi
+            .get("/api/v1/upazillas")
+            .then((res) => setUpazillas(res.data));
+    }, [publicApi]);
+
     const handleShowPassword = () => {
         setShowPassword(!showPassword);
     };
@@ -26,7 +48,67 @@ const Register = () => {
             });
             return;
         }
-        console.log(data);
+        if (data.bloodGroup === "Pick one") {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Please select a blood group.",
+            });
+            return;
+        }
+        if (data.division === "Pick one") {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Please select a division.",
+            });
+            return;
+        }
+        if (data.district === "Pick one") {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Please select a district.",
+            });
+            return;
+        }
+        if (data.upazilla === "Pick one") {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Please select a upazilla.",
+            });
+            return;
+        }
+        createUser(data.email, data.password)
+            .then((userCredential) => {
+                // Signed up
+                const user = userCredential.user;
+                console.log(user);  
+                if (user) {
+                    const userInfo = {
+                        role: "donor",
+                        name: data.fullName,
+                        email: data.email,
+                        division: data.division,
+                        district: data.district,
+                        upazila: data.upazila,
+                        bloodGroup: data.bloodGroup,
+                        uid: user.uid,
+                    };
+                    console.log(userInfo);
+                }
+                // ...
+            })
+            .catch((error) => {
+                const errorMessage = error.message;
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: errorMessage,
+                });
+                return;
+            });
     };
 
     return (
@@ -51,96 +133,214 @@ const Register = () => {
                                 className="px-8 pt-6 pb-8 mb-4 bg-white rounded"
                             >
                                 <div className="mb-4 md:flex md:justify-between">
-                                    <div className="mb-4 md:mr-2 md:mb-0">
+                                    <div className="mb-4 md:mr-2 md:mb-0 md:w-1/2">
+                                        <label
+                                            className="block mb-2 text-sm font-bold text-gray-700"
+                                            htmlFor="fullName"
+                                        >
+                                            Full Name
+                                        </label>
+                                        <input
+                                            className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                                            id="fullName"
+                                            type="text"
+                                            placeholder="Full Name"
+                                            name="fullName"
+                                            {...register("fullName", {
+                                                required: {
+                                                    value: true,
+                                                    message: "Name is required",
+                                                },
+                                            })}
+                                        />
+                                        <label className="block my-2 text-sm font-bold text-red-500">
+                                            {errors.fullName && (
+                                                <p>{errors.fullName.message}</p>
+                                            )}
+                                        </label>
+                                    </div>
+
+                                    <div className="mb-4 md:w-1/2">
+                                        <label
+                                            className="block mb-2 text-sm font-bold text-gray-700"
+                                            htmlFor="email"
+                                        >
+                                            Email
+                                        </label>
+                                        <input
+                                            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                                            id="email"
+                                            type="email"
+                                            placeholder="Email"
+                                            name="email"
+                                            {...register("email", {
+                                                required: {
+                                                    value: true,
+                                                    message:
+                                                        "Email is required",
+                                                },
+                                                pattern: {
+                                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                                    message:
+                                                        "Invalid email address",
+                                                },
+                                            })}
+                                        />
+                                        <label className="block my-2 text-sm font-bold text-red-500">
+                                            {errors.email && (
+                                                <p>{errors.email.message}</p>
+                                            )}
+                                        </label>
+                                    </div>
+                                </div>
+                                <div className="mb-4 md:flex md:justify-between">
+                                    <div className="mb-4 md:mr-2 md:mb-0 md:w-1/2">
                                         <label
                                             className="block mb-2 text-sm font-bold text-gray-700"
                                             htmlFor="firstName"
                                         >
-                                            First Name
+                                            Blood Group
                                         </label>
-                                        <input
-                                            className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                                            id="firstName"
-                                            type="text"
-                                            placeholder="First Name"
-                                            name="firstName"
-                                            {...register("firstName", {
-                                                required: {
-                                                    value: true,
-                                                    message:
-                                                        "First Name is required",
-                                                },
-                                            })}
-                                        />
+                                        <select
+                                            defaultValue="Pick one"
+                                            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow  focus:outline-none focus:shadow-outline"
+                                            {...register("bloodGroup")}
+                                        >
+                                            <option value="Pick one" disabled>
+                                                Pick one
+                                            </option>
+                                            <option>A+</option>
+                                            <option>A-</option>
+                                            <option>B+</option>
+                                            <option>B-</option>
+                                            <option>AB+</option>
+                                            <option>AB-</option>
+                                            <option>O+</option>
+                                            <option>O-</option>
+                                        </select>
                                         <label className="block my-2 text-sm font-bold text-red-500">
-                                            {errors.firstName && (
+                                            {errors.bloodGroup && (
                                                 <p>
-                                                    {errors.firstName.message}
+                                                    {errors.bloodGroup.message}
                                                 </p>
                                             )}
                                         </label>
                                     </div>
-                                    <div className="md:ml-2">
+
+                                    <div className="mb-4 md:w-1/2">
                                         <label
                                             className="block mb-2 text-sm font-bold text-gray-700"
-                                            htmlFor="lastName"
+                                            htmlFor="division"
                                         >
-                                            Last Name
+                                            Division
                                         </label>
-                                        <input
-                                            className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                                            id="lastName"
-                                            type="text"
-                                            placeholder="Last Name"
-                                            name="lastName"
-                                            {...register("lastName", {
+                                        <select
+                                            defaultValue="Pick one"
+                                            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow  focus:outline-none focus:shadow-outline"
+                                            {...register("division", {
                                                 required: {
                                                     value: true,
                                                     message:
-                                                        "Last Name is required",
+                                                        "Division is required",
                                                 },
                                             })}
-                                        />
+                                        >
+                                            <option value="Pick one" disabled>
+                                                Pick one
+                                            </option>
+                                            {divisions.map((data) => (
+                                                <option
+                                                    key={data._id}
+                                                    value={data.name}
+                                                >
+                                                    {data.name}
+                                                </option>
+                                            ))}
+                                        </select>
                                         <label className="block my-2 text-sm font-bold text-red-500">
-                                            {errors.lastName && (
-                                                <p>{errors.lastName.message}</p>
+                                            {errors.division && (
+                                                <p>{errors.division.message}</p>
                                             )}
                                         </label>
                                     </div>
                                 </div>
-                                <div className="mb-4">
-                                    <label
-                                        className="block mb-2 text-sm font-bold text-gray-700"
-                                        htmlFor="email"
-                                    >
-                                        Email
-                                    </label>
-                                    <input
-                                        className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                                        id="email"
-                                        type="email"
-                                        placeholder="Email"
-                                        name="email"
-                                        {...register("email", {
-                                            required: {
-                                                value: true,
-                                                message: "Email is required",
-                                            },
-                                            pattern: {
-                                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                                                message:
-                                                    "Invalid email address",
-                                            },
-                                        })}
-                                    />
-                                    <label className="block my-2 text-sm font-bold text-red-500">
-                                        {errors.email && (
-                                            <p>{errors.email.message}</p>
-                                        )}
-                                    </label>
+                                <div className="mb-4 md:flex md:justify-between">
+                                    <div className="mb-4 md:mr-2 md:mb-0 md:w-1/2">
+                                        <label
+                                            className="block mb-2 text-sm font-bold text-gray-700"
+                                            htmlFor="district"
+                                        >
+                                            District
+                                        </label>
+                                        <select
+                                            defaultValue="Pick one"
+                                            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow  focus:outline-none focus:shadow-outline"
+                                            {...register("district", {
+                                                required: {
+                                                    value: true,
+                                                    message:
+                                                        "District is required",
+                                                },
+                                            })}
+                                        >
+                                            <option value="Pick one" disabled>
+                                                Pick one
+                                            </option>
+                                            {districts.map((data) => (
+                                                <option
+                                                    key={data._id}
+                                                    value={data.name}
+                                                >
+                                                    {data.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <label className="block my-2 text-sm font-bold text-red-500">
+                                            {errors.district && (
+                                                <p>{errors.district.message}</p>
+                                            )}
+                                        </label>
+                                    </div>
+
+                                    <div className="mb-4 md:w-1/2">
+                                        <label
+                                            className="block mb-2 text-sm font-bold text-gray-700"
+                                            htmlFor="upazila"
+                                        >
+                                            Upazila
+                                        </label>
+                                        <select
+                                            defaultValue="Pick one"
+                                            className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow  focus:outline-none focus:shadow-outline"
+                                            {...register("upazilla", {
+                                                required: {
+                                                    value: true,
+                                                    message:
+                                                        "Upazilla is required",
+                                                },
+                                            })}
+                                        >
+                                            <option value="Pick one" disabled>
+                                                Pick one
+                                            </option>
+                                            {upazillas.map((data) => (
+                                                <option
+                                                    key={data._id}
+                                                    value={data.name}
+                                                >
+                                                    {data.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <label className="block my-2 text-sm font-bold text-red-500">
+                                            {errors.upazilla && (
+                                                <p>{errors.upazilla.message}</p>
+                                            )}
+                                        </label>
+                                    </div>
                                 </div>
                                 <div className="mb-4 md:flex md:justify-between">
-                                    <div className="mb-2 md:mr-2 md:mb-0">
+                                    <div className="mb-2 md:mr-2 md:mb-0 md:w-1/2">
                                         <label
                                             className="block mb-2 text-sm font-bold text-gray-700"
                                             htmlFor="password"
@@ -203,7 +403,7 @@ const Register = () => {
                                             )}
                                         </label>
                                     </div>
-                                    <div className="md:ml-2">
+                                    <div className="md:ml-2 md:w-1/2">
                                         <label
                                             className="block mb-2 text-sm font-bold text-gray-700"
                                             htmlFor="c_password"
