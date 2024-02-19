@@ -19,3 +19,7 @@ body {
         --color-accent: 99 14 52;
     }
 }
+
+.custom-bg {
+    background-color: #334155;
+}

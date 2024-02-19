@@ -91,7 +91,7 @@ const Register = () => {
                         email: data.email,
                         division: data.division,
                         district: data.district,
-                        upazila: data.upazila,
+                        upazilla: data.upazilla,
                         bloodGroup: data.bloodGroup,
                         uid: user.uid,
                         role: "donor",

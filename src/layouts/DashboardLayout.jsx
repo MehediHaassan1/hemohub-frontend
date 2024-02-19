@@ -1,9 +1,10 @@
 import { FaUserAlt } from "react-icons/fa";
 import { IoLocation } from "react-icons/io5";
 import { NavLink, Outlet } from "react-router-dom";
+import useUserData from "../hooks/useUserData";
 
 const Dashboard = () => {
-    const userData = false;
+    const { userData } = useUserData();
     return (
         <>
             <div className="max-w-screen-xl mx-auto px-4 md:px-10 lg:px-20 py-5">
@@ -28,32 +29,32 @@ const Dashboard = () => {
                             </div>
                         )}
 
-                        <div>
-                            <h2 className="text-xl capitalize">
+                        <div className="my-3">
+                            <h2 className="text-xl capitalize text-txt">
                                 {userData?.name}
                             </h2>
-                            <h2 className="text-md">
-                                {userData?.uid?.slice(0, 6)}
+                            <h2 className="text-md text-txt">
+                                HHID : {userData?.uid?.slice(0, 6)}
                             </h2>
                         </div>
                         <div className="my-5 bg-primary space-y-4">
                             <NavLink
-                                className="flex items-center gap-2 border p-2 rounded-md"
+                                className="flex items-center gap-2 border p-2 rounded-md text-txt"
                                 to="my-profile"
                             >
-                                <FaUserAlt className="w-5 h-5"></FaUserAlt> My
-                                Profile
+                                <FaUserAlt className="w-5 h-5 text-accent"></FaUserAlt>{" "}
+                                My Profile
                             </NavLink>
                             <NavLink
-                                className="flex items-center gap-2 border p-2 rounded-md"
+                                className="flex items-center gap-2 border p-2 rounded-md text-txt"
                                 to="my-address"
                             >
-                                <IoLocation className="w-5 h-5"></IoLocation> My
-                                Address
+                                <IoLocation className="w-5 h-5 text-accent"></IoLocation>{" "}
+                                My Address
                             </NavLink>
                         </div>
                     </div>
-                    <div className="text-white md:col-span-8 lg:col-span-9 bg-slate-500 p-4 lg:p-10 rounded-md">
+                    <div className="text-white md:col-span-8 lg:col-span-9 bg-slate-700 p-4 lg:p-10 rounded-md">
                         <Outlet></Outlet>
                     </div>
                 </div>
