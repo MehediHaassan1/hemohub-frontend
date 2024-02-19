@@ -1,4 +1,4 @@
-import SectionTitle from "../../../components/SectionTitle/SectionTitle";
+import SectionTitle from "../../shared/SectionTitle/SectionTitle";
 
 const Contact = () => {
     return (

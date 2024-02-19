@@ -47,6 +47,7 @@ const AuthProviders = ({ children }) => {
                 setLoading(false);
             } else {
                 setUser(null);
+                setLoading(false);
             }
         });
 

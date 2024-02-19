@@ -5,7 +5,7 @@ import {
     FaTwitter,
 } from "react-icons/fa6";
 import { Parallax } from "react-parallax";
-import SectionTitle from "../../../components/SectionTitle/SectionTitle";
+import SectionTitle from "../../shared/SectionTitle/SectionTitle";
 
 const Volunteers = () => {
     const volunteersData = [

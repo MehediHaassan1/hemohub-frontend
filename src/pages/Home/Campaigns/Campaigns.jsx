@@ -1,4 +1,4 @@
-import SectionTitle from "../../../components/SectionTitle/SectionTitle";
+import SectionTitle from "../../shared/SectionTitle/SectionTitle";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";

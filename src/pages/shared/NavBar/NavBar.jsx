@@ -1,8 +1,9 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import logo from "../../../assets/logo.svg";
 import { useContext } from "react";
 import { USER_CONTEXT } from "../../../context/AuthProviders";
 import Swal from "sweetalert2";
+import { FaUserCircle } from "react-icons/fa";
 
 const NavBar = () => {
     const { user, logOutUser } = useContext(USER_CONTEXT);
@@ -66,9 +67,6 @@ const NavBar = () => {
                             Donate
                         </NavLink>
                     </li>
-                    <li onClick={handleLogOut}>
-                        <p className="text-lg">Logout</p>
-                    </li>
                 </>
             )}
         </>
@@ -103,12 +101,51 @@ const NavBar = () => {
                     <div className="flex-1 mx-2">
                         <img src={logo} alt="logo" />
                     </div>
+
                     <div className="flex-none hidden lg:block">
                         <ul className="menu menu-horizontal">
                             {/* Navbar menu content here */}
                             {navLinks}
                         </ul>
                     </div>
+
+                    {user && (
+                        <div className="dropdown dropdown-end">
+                            <div
+                                tabIndex={0}
+                                role="button"
+                                className="btn btn-ghost btn-circle avatar"
+                            >
+                                <div className="w-10 rounded-full">
+                                    {user?.displayURl ? (
+                                        <img
+                                            alt="Tailwind CSS Navbar component"
+                                            src={user?.displayURl}
+                                        />
+                                    ) : (
+                                        <div className="flex items-center justify-center p-1">
+                                            <FaUserCircle className="w-8 h-8 bg-primary rounded-full"></FaUserCircle>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                            <ul
+                                tabIndex={0}
+                                className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-bkg rounded-box w-52"
+                            >
+                                <li>
+                                    <Link to="/dashboard">Dashboard</Link>
+                                </li>
+                                <li>
+                                    <Link to="/settings">Settings</Link>
+                                </li>
+
+                                <li onClick={handleLogOut}>
+                                    <Link>Logout</Link>
+                                </li>
+                            </ul>
+                        </div>
+                    )}
                 </div>
             </div>
             <div className="drawer-side z-50">
