@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import GoogleLogin from "../shared/GoogleLogin/GoogleLogin";
 import { useForm } from "react-hook-form";
 import { useContext, useEffect, useState } from "react";
@@ -7,6 +7,7 @@ import usePublicApi from "../../hooks/usePublicApi";
 import { USER_CONTEXT } from "../../context/AuthProviders";
 
 const Register = () => {
+    const navigate = useNavigate();
     const publicApi = usePublicApi();
     const { createUser } = useContext(USER_CONTEXT);
     const {
@@ -37,7 +38,7 @@ const Register = () => {
         setShowPassword(!showPassword);
     };
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         const password = data.password;
         const c_password = data.c_password;
         if (password !== c_password) {
@@ -81,13 +82,11 @@ const Register = () => {
             return;
         }
         createUser(data.email, data.password)
-            .then((userCredential) => {
-                // Signed up
+            .then(async (userCredential) => {
                 const user = userCredential.user;
-                console.log(user);  
+                console.log(user);
                 if (user) {
                     const userInfo = {
-                        role: "donor",
                         name: data.fullName,
                         email: data.email,
                         division: data.division,
@@ -95,10 +94,21 @@ const Register = () => {
                         upazila: data.upazila,
                         bloodGroup: data.bloodGroup,
                         uid: user.uid,
+                        role: "donor",
+                        status: "active",
                     };
-                    console.log(userInfo);
+                    const res = await publicApi.post("/api/v1/users", userInfo);
+                    if (res.data.insertedId) {
+                        Swal.fire({
+                            position: "top-end",
+                            icon: "success",
+                            title: "Register successful",
+                            showConfirmButton: false,
+                            timer: 2000,
+                        });
+                        navigate("/");
+                    }
                 }
-                // ...
             })
             .catch((error) => {
                 const errorMessage = error.message;
