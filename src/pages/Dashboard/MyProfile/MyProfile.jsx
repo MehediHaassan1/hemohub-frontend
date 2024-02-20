@@ -198,6 +198,22 @@ const MyProfile = () => {
                             </label>
                         </div>
                     </div>
+                    <div>
+                        <label className="form-control w-full">
+                            <div className="label">
+                                <span className="label-text text-lg font-semibold text-txt">
+                                    Image
+                                </span>
+                            </div>
+                            <input
+                                type="file"
+                                className={`file-input file-input-bordered w-full max-w-xs disabled:bg-transparent disabled:border-primary  disabled:text-txt ${
+                                    edit ? "bg-slate-900 text-txt " : ""
+                                }`}
+                                disabled={edit ? false : true}
+                            />
+                        </label>
+                    </div>
                 </form>
             </div>
         </div>
