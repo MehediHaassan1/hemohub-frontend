@@ -7,18 +7,21 @@ import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import useStateData from "../../../hooks/useStateData";
 import Swal from "sweetalert2";
+import usePublicApi from "../../../hooks/usePublicApi";
 
 const DonationRequest = () => {
     const { userData } = useUserData();
     const [edit, setEdit] = useState(false);
+    const publicApi = usePublicApi();
     const {
         register,
         handleSubmit,
         formState: { errors },
+        reset,
     } = useForm();
     const [startDate, setStartDate] = useState(new Date());
     const { districtData, subDistrictData } = useStateData();
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         if (data.bloodGroup === "Pick one") {
             Swal.fire({
                 icon: "error",
@@ -44,9 +47,23 @@ const DonationRequest = () => {
             });
             return;
         }
-        console.log(data);
         const date = moment(startDate).format("DD-MM-YYYY");
-        console.log(date);
+
+        const donationInfo = { ...data, donationDate: date, status: "pending" };
+        const donationReqRes = await publicApi.post(
+            "/api/v1/donation-request",
+            donationInfo
+        );
+        if (donationReqRes.data.insertedId) {
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Donation request successful",
+                showConfirmButton: false,
+                timer: 2000,
+            });
+            reset();
+        }
     };
 
     return (
