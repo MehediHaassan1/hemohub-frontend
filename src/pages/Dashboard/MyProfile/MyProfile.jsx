@@ -1,31 +1,63 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useUserData from "../../../hooks/useUserData";
 import DashboardTitle from "../../shared/DashboardTitle/DashboardTitle";
-// import useStateData from "../../../hooks/useStateData";
+import useStateData from "../../../hooks/useStateData";
+import { useForm } from "react-hook-form";
 import usePublicApi from "../../../hooks/usePublicApi";
+import Swal from "sweetalert2";
+
+const imageHostingKey = import.meta.env.VITE_IMAGE_HOSTING_KEY;
+const imageHostingURL = `https://api.imgbb.com/1/upload?key=${imageHostingKey}`;
 
 const MyProfile = () => {
-    const { userData } = useUserData();
-    // const { divisionData, districtData, subDistrictData } = useStateData();
-    const [divisions, setDivisions] = useState([]);
-    const [districts, setDistricts] = useState([]);
-    const [subdistricts, setSubdistricts] = useState([]);
-    const publicApi = usePublicApi();
-
-    useEffect(() => {
-        publicApi
-            .get("/api/v1/divisions")
-            .then((res) => setDivisions(res.data));
-
-        publicApi
-            .get("/api/v1/districts")
-            .then((res) => setDistricts(res.data));
-
-        publicApi
-            .get("/api/v1/subdistricts")
-            .then((res) => setSubdistricts(res.data));
-    }, [publicApi]);
+    const { userData, refetch } = useUserData();
+    const { divisionData, districtData, subDistrictData } = useStateData();
     const [edit, setEdit] = useState(false);
+    const publicApi = usePublicApi();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        reset,
+    } = useForm();
+
+    const onSubmit = async (data) => {
+        const imageData = { image: data.image[0] };
+        const imageHostingRes = await publicApi.post(
+            imageHostingURL,
+            imageData,
+            {
+                headers: {
+                    "content-type": "multipart/form-data",
+                },
+            }
+        );
+        const image = imageHostingRes.data.data.display_url;
+        const updatedInfo = {
+            name: data.name,
+            email: data.email,
+            division: data.division,
+            district: data.district,
+            subdistrict: data.subdistrict,
+            bloodGroup: data.bloodGroup,
+            image,
+        };
+        const updateUserInfoRes = await publicApi.patch(
+            `/api/v1/update-user-info/${userData._id}`,
+            updatedInfo
+        );
+        if (updateUserInfoRes.data.modifiedCount > 0) {
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Updated successful",
+                showConfirmButton: false,
+                timer: 2000,
+            });
+            refetch();
+            setEdit(false);
+        }
+    };
 
     return (
         <div>
@@ -35,7 +67,7 @@ const MyProfile = () => {
                 setEdit={setEdit}
             ></DashboardTitle>
             <div className="">
-                <form>
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="flex items-center justify-between md:gap-2 lg:gap-5">
                         <div className="md:w-1/2">
                             <label className="form-control w-full">
@@ -57,6 +89,12 @@ const MyProfile = () => {
                                         `}
                                     defaultValue={userData?.name}
                                     readOnly={edit ? false : true}
+                                    {...register("name", {
+                                        required: {
+                                            value: true,
+                                            message: "Name is required",
+                                        },
+                                    })}
                                 />
                             </label>
                         </div>
@@ -75,6 +113,12 @@ const MyProfile = () => {
                                         `}
                                     defaultValue={userData?.email}
                                     readOnly
+                                    {...register("email", {
+                                        required: {
+                                            value: true,
+                                            message: "Email is required",
+                                        },
+                                    })}
                                 />
                             </label>
                         </div>
@@ -95,6 +139,12 @@ const MyProfile = () => {
                                         `}
                                     defaultValue={userData?.bloodGroup}
                                     disabled={edit ? false : true}
+                                    {...register("bloodGroup", {
+                                        required: {
+                                            value: true,
+                                            message: "Blood Group is required",
+                                        },
+                                    })}
                                 >
                                     <option className="bg-slate-800" value="A+">
                                         A+
@@ -144,8 +194,14 @@ const MyProfile = () => {
                                         }
                                         `}
                                     disabled={edit ? false : true}
+                                    {...register("division", {
+                                        required: {
+                                            value: true,
+                                            message: "division is required",
+                                        },
+                                    })}
                                 >
-                                    {divisions?.map((data) => (
+                                    {divisionData?.map((data) => (
                                         <option
                                             key={data?._id}
                                             className="bg-slate-800"
@@ -174,8 +230,14 @@ const MyProfile = () => {
                                         `}
                                     defaultValue={userData?.district}
                                     disabled={edit ? false : true}
+                                    {...register("district", {
+                                        required: {
+                                            value: true,
+                                            message: "District is required",
+                                        },
+                                    })}
                                 >
-                                    {districts?.map((data) => (
+                                    {districtData?.map((data) => (
                                         <option
                                             key={data?._id}
                                             className="bg-slate-800"
@@ -202,8 +264,14 @@ const MyProfile = () => {
                                         }
                                         `}
                                     disabled={edit ? false : true}
+                                    {...register("subdistrict", {
+                                        required: {
+                                            value: true,
+                                            message: "Subdistrict is required",
+                                        },
+                                    })}
                                 >
-                                    {subdistricts?.map((data) => (
+                                    {subDistrictData?.map((data) => (
                                         <option
                                             key={data._id}
                                             className="bg-slate-800"
@@ -216,17 +284,42 @@ const MyProfile = () => {
                             </label>
                         </div>
                     </div>
-                    <div>
+                    <div className="mb-5">
+                        <div className="">
+                            <label className="form-control w-full">
+                                <div className="label">
+                                    <span className="label-text text-lg font-semibold text-txt">
+                                        Image
+                                    </span>
+                                </div>
+                                <input
+                                    type="file"
+                                    className={`file-input file-input-bordered w-full disabled:bg-transparent disabled:border-primary disabled:text-txt ${
+                                        edit ? "bg-slate-900 text-txt " : ""
+                                    }`}
+                                    disabled={edit ? false : true}
+                                    {...register("image", {
+                                        required: {
+                                            value: true,
+                                            message: "Image is required",
+                                        },
+                                    })}
+                                />
+                            </label>
+                        </div>
+                    </div>
+                    <div className="">
                         <label className="form-control w-full">
                             <div className="label">
-                                <span className="label-text text-lg font-semibold text-txt">
-                                    Image
-                                </span>
+                                <span className="label-text text-lg font-semibold text-txt"></span>
                             </div>
                             <input
-                                type="file"
-                                className={`file-input file-input-bordered w-full max-w-xs disabled:bg-transparent disabled:border-primary  disabled:text-txt ${
-                                    edit ? "bg-slate-900 text-txt " : ""
+                                type="submit"
+                                value="Update"
+                                className={`file-input file-input-bordered w-full disabled:bg-accent disabled:border-primary disabled:text-black disabled:tracking-widest text-black font-bold  ${
+                                    edit
+                                        ? "bg-accent/80 tracking-widest cursor-pointer"
+                                        : ""
                                 }`}
                                 disabled={edit ? false : true}
                             />

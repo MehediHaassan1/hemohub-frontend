@@ -54,13 +54,22 @@ const Dashboard = () => {
                                 My Address
                             </NavLink>
                             {userData?.role === "donor" && (
-                                <NavLink
-                                    className="flex items-center gap-2 border p-2 rounded-md text-txt"
-                                    to="my-donation-request"
-                                >
-                                    <TbGitPullRequest className="w-5 h-5 text-accent"></TbGitPullRequest>{" "}
-                                    Request
-                                </NavLink>  
+                                <>
+                                    <NavLink
+                                        className="flex items-center gap-2 border p-2 rounded-md text-txt"
+                                        to="create-donation-request"
+                                    >
+                                        <TbGitPullRequest className="w-5 h-5 text-accent"></TbGitPullRequest>{" "}
+                                        Create Request
+                                    </NavLink>
+                                    <NavLink
+                                        className="flex items-center gap-2 border p-2 rounded-md text-txt"
+                                        to="my-donation-requests"
+                                    >
+                                        <TbGitPullRequest className="w-5 h-5 text-accent"></TbGitPullRequest>{" "}
+                                        My Request
+                                    </NavLink>
+                                </>
                             )}
                         </div>
                     </div>

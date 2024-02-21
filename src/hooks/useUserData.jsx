@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { USER_CONTEXT } from "../context/AuthProviders";
 import { useQuery } from "@tanstack/react-query";
 import usePublicApi from "./usePublicApi";
-import Loading from "../components/Loading";
 
 const useUserData = () => {
     const { user } = useContext(USER_CONTEXT);
@@ -12,6 +11,7 @@ const useUserData = () => {
         data: userData,
         isPending,
         isLoading,
+        refetch,
     } = useQuery({
         queryKey: ["userData", user?.uid],
         queryFn: async () => {
@@ -20,7 +20,7 @@ const useUserData = () => {
         },
     });
 
-    return { userData, isPending, isLoading };
+    return { userData, isPending, isLoading, refetch };
 };
 
 export default useUserData;
