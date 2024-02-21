@@ -6,8 +6,8 @@ import useUserData from "../hooks/useUserData";
 
 const PrivetRoute = ({ children }) => {
     const { user, loading } = useContext(USER_CONTEXT);
-    const { isPending } = useUserData();
-    if (loading || isPending) {
+    const { isPending, isLoading } = useUserData();
+    if (loading || isLoading || isPending) {
         return <Loading></Loading>;
     }
     if (user) {

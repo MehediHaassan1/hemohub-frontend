@@ -1,12 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useUserData from "../../../hooks/useUserData";
 import DashboardTitle from "../../shared/DashboardTitle/DashboardTitle";
-import useStateData from "../../../hooks/useStateData";
+// import useStateData from "../../../hooks/useStateData";
+import usePublicApi from "../../../hooks/usePublicApi";
 
 const MyProfile = () => {
     const { userData } = useUserData();
-    console.log(userData?.division);
-    const { divisionData, districtData, upazillaData } = useStateData();
+    // const { divisionData, districtData, subDistrictData } = useStateData();
+    const [divisions, setDivisions] = useState([]);
+    const [districts, setDistricts] = useState([]);
+    const [subdistricts, setSubdistricts] = useState([]);
+    const publicApi = usePublicApi();
+
+    useEffect(() => {
+        publicApi
+            .get("/api/v1/divisions")
+            .then((res) => setDivisions(res.data));
+
+        publicApi
+            .get("/api/v1/districts")
+            .then((res) => setDistricts(res.data));
+
+        publicApi
+            .get("/api/v1/subdistricts")
+            .then((res) => setSubdistricts(res.data));
+    }, [publicApi]);
     const [edit, setEdit] = useState(false);
 
     return (
@@ -127,7 +145,7 @@ const MyProfile = () => {
                                         `}
                                     disabled={edit ? false : true}
                                 >
-                                    {divisionData?.map((data) => (
+                                    {divisions?.map((data) => (
                                         <option
                                             key={data?._id}
                                             className="bg-slate-800"
@@ -157,7 +175,7 @@ const MyProfile = () => {
                                     defaultValue={userData?.district}
                                     disabled={edit ? false : true}
                                 >
-                                    {districtData?.map((data) => (
+                                    {districts?.map((data) => (
                                         <option
                                             key={data?._id}
                                             className="bg-slate-800"
@@ -173,11 +191,11 @@ const MyProfile = () => {
                             <label className="form-control w-full">
                                 <div className="label">
                                     <span className="label-text text-lg font-semibold text-txt">
-                                        Division
+                                        Sub District
                                     </span>
                                 </div>
                                 <select
-                                    defaultValue={userData?.upazilla}
+                                    defaultValue={userData?.subdistrict}
                                     className={`input w-full text-txt focus:border-primary focus:outline-none 
                                         text-lg border border-primary disabled:bg-transparent disabled:border-primary  disabled:text-txt ${
                                             edit ? "bg-slate-900 text-txt" : ""
@@ -185,7 +203,7 @@ const MyProfile = () => {
                                         `}
                                     disabled={edit ? false : true}
                                 >
-                                    {upazillaData?.map((data) => (
+                                    {subdistricts?.map((data) => (
                                         <option
                                             key={data._id}
                                             className="bg-slate-800"

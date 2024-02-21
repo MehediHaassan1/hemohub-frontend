@@ -1,11 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import usePublicApi from "./usePublicApi";
+import Loading from "../components/Loading";
 
 const useStateData = () => {
     const publicApi = usePublicApi();
 
     // division query
-    const { data: divisionData } = useQuery({
+    const { data: divisionData, isLoading: divisionIsLoading } = useQuery({
         queryKey: ["divisionData"],
         queryFn: async () => {
             const divisionRes = await publicApi.get("/api/v1/divisions");
@@ -14,7 +15,7 @@ const useStateData = () => {
     });
 
     // district query
-    const { data: districtData } = useQuery({
+    const { data: districtData, isLoading: districtIsLoading } = useQuery({
         queryKey: ["districtData "],
         queryFn: async () => {
             const districtRes = await publicApi.get("/api/v1/districts");
@@ -23,15 +24,22 @@ const useStateData = () => {
     });
 
     // district query
-    const { data: upazillaData } = useQuery({
-        queryKey: ["upazilaData "],
-        queryFn: async () => {
-            const upazillaRes = await publicApi.get("/api/v1/upazillas");
-            return upazillaRes.data;
-        },
-    });
+    const { data: subDistrictData, isLoading: subdistrictIsLoading } = useQuery(
+        {
+            queryKey: ["upazilaData "],
+            queryFn: async () => {
+                const subDistrictRes = await publicApi.get(
+                    "/api/v1/subdistricts"
+                );
+                return subDistrictRes.data;
+            },
+        }
+    );
 
-    return { divisionData, districtData, upazillaData };
+    if (divisionIsLoading || districtIsLoading || subdistrictIsLoading)
+        return <Loading></Loading>;
+
+    return { divisionData, districtData, subDistrictData };
 };
 
 export default useStateData;

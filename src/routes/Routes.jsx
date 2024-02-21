@@ -7,6 +7,7 @@ import PrivetRoute from "./PrivetRoute";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Dashboard from "../pages/Dashboard/Dashboard/Dashboard";
 import MyProfile from "../pages/Dashboard/MyProfile/MyProfile";
+import DonationRequest from "../pages/Dashboard/DonationRequest/DonationRequest";
 
 const router = createBrowserRouter([
     {
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
             {
                 path: "my-profile",
                 element: <MyProfile></MyProfile>,
+            },
+            {
+                path: "my-donation-request",
+                element: <DonationRequest></DonationRequest>,
             },
         ],
     },

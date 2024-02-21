@@ -2,6 +2,7 @@ import { FaUserAlt } from "react-icons/fa";
 import { IoLocation } from "react-icons/io5";
 import { NavLink, Outlet } from "react-router-dom";
 import useUserData from "../hooks/useUserData";
+import { TbGitPullRequest } from "react-icons/tb";
 
 const Dashboard = () => {
     const { userData } = useUserData();
@@ -52,6 +53,15 @@ const Dashboard = () => {
                                 <IoLocation className="w-5 h-5 text-accent"></IoLocation>{" "}
                                 My Address
                             </NavLink>
+                            {userData?.role === "donor" && (
+                                <NavLink
+                                    className="flex items-center gap-2 border p-2 rounded-md text-txt"
+                                    to="my-donation-request"
+                                >
+                                    <TbGitPullRequest className="w-5 h-5 text-accent"></TbGitPullRequest>{" "}
+                                    Request
+                                </NavLink>  
+                            )}
                         </div>
                     </div>
                     <div className="text-white md:col-span-8 lg:col-span-9 bg-slate-700 p-4 lg:p-10 rounded-md">

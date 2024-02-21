@@ -18,7 +18,7 @@ const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [divisions, setDivisions] = useState([]);
     const [districts, setDistricts] = useState([]);
-    const [upazillas, setUpazillas] = useState([]);
+    const [subdistricts, setSubdistricts] = useState([]);
 
     useEffect(() => {
         publicApi
@@ -30,8 +30,8 @@ const Register = () => {
             .then((res) => setDistricts(res.data));
 
         publicApi
-            .get("/api/v1/upazillas")
-            .then((res) => setUpazillas(res.data));
+            .get("/api/v1/subdistricts")
+            .then((res) => setSubdistricts(res.data));
     }, [publicApi]);
 
     const handleShowPassword = () => {
@@ -73,11 +73,11 @@ const Register = () => {
             });
             return;
         }
-        if (data.upazilla === "Pick one") {
+        if (data.subdistrict === "Pick one") {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: "Please select a upazilla.",
+                text: "Please select a subdistrict.",
             });
             return;
         }
@@ -91,7 +91,7 @@ const Register = () => {
                         email: data.email,
                         division: data.division,
                         district: data.district,
-                        upazilla: data.upazilla,
+                        subdistrict: data.subdistrict,
                         bloodGroup: data.bloodGroup,
                         uid: user.uid,
                         role: "donor",
@@ -315,25 +315,25 @@ const Register = () => {
                                     <div className="mb-4 md:w-1/2">
                                         <label
                                             className="block mb-2 text-sm font-bold text-gray-700"
-                                            htmlFor="upazila"
+                                            htmlFor="subdistrict"
                                         >
-                                            Upazila
+                                            Sub District
                                         </label>
                                         <select
                                             defaultValue="Pick one"
                                             className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow  focus:outline-none focus:shadow-outline"
-                                            {...register("upazilla", {
+                                            {...register("subdistrict", {
                                                 required: {
                                                     value: true,
                                                     message:
-                                                        "Upazilla is required",
+                                                        "Sub District is required",
                                                 },
                                             })}
                                         >
                                             <option value="Pick one" disabled>
                                                 Pick one
                                             </option>
-                                            {upazillas.map((data) => (
+                                            {subdistricts.map((data) => (
                                                 <option
                                                     key={data._id}
                                                     value={data.name}
