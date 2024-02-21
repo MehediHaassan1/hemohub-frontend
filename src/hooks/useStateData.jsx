@@ -26,7 +26,7 @@ const useStateData = () => {
     // district query
     const { data: subDistrictData, isLoading: subdistrictIsLoading } = useQuery(
         {
-            queryKey: ["upazilaData "],
+            queryKey: ["subdistricts "],
             queryFn: async () => {
                 const subDistrictRes = await publicApi.get(
                     "/api/v1/subdistricts"
