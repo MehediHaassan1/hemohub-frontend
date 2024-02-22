@@ -14,12 +14,14 @@ const Dashboard = () => {
                 Hi {userData.name.split(" ")[0]}, Welcome to HemoHub
             </h1>
             <img src={lab} alt="lab" className=" w-4/6" />
-            <div>
-                <h1 className="capitalize text-3xl border-b border-dashed pb-2 mb-2 text-center">
-                    latest donation
-                </h1>
-                <Table myDonationReqs={myDonationReqs}></Table>
-            </div>
+            {myDonationReqs?.length > 0 && (
+                <div>
+                    <h1 className="capitalize text-3xl border-b border-dashed pb-2 mb-2 text-center">
+                        latest donation
+                    </h1>
+                    <Table myDonationReqs={myDonationReqs}></Table>
+                </div>
+            )}
         </div>
     );
 };

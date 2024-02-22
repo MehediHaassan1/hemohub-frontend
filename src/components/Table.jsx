@@ -3,7 +3,7 @@ import { FaCircleInfo } from "react-icons/fa6";
 import { RxCross2 } from "react-icons/rx";
 import Swal from "sweetalert2";
 
-const Table = ({ myDonationReqs }) => {
+const Table = ({ myDonationReqs, handleUpdateStatus }) => {
     const handleDonorInfo = (data) => {
         Swal.fire({
             title: "Donor Info!",
@@ -36,10 +36,20 @@ const Table = ({ myDonationReqs }) => {
                             <td>{data.donationTime}</td>
                             {data.status === "inprogress" ? (
                                 <td className="space-x-3">
-                                    <button title="done">
+                                    <button
+                                        title="done"
+                                        onClick={() =>
+                                            handleUpdateStatus("done", data)
+                                        }
+                                    >
                                         <FaCheck className="w-4 h-4"></FaCheck>
                                     </button>
-                                    <button title="cancel">
+                                    <button
+                                        title="cancel"
+                                        onClick={() =>
+                                            handleUpdateStatus("canceled", data)
+                                        }
+                                    >
                                         <RxCross2 className="w-4 h-4"></RxCross2>
                                     </button>
                                 </td>
