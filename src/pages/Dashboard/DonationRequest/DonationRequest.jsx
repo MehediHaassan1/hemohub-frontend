@@ -7,12 +7,12 @@ import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import useStateData from "../../../hooks/useStateData";
 import Swal from "sweetalert2";
-import usePublicApi from "../../../hooks/usePublicApi";
+import usePrivetApi from "../../../hooks/usePrivetApi";
 
 const DonationRequest = () => {
     const { userData } = useUserData();
     const [edit, setEdit] = useState(false);
-    const publicApi = usePublicApi();
+    const privetApi = usePrivetApi();
     const {
         register,
         handleSubmit,
@@ -50,7 +50,7 @@ const DonationRequest = () => {
         const date = moment(startDate).format("DD-MM-YYYY");
 
         const donationInfo = { ...data, donationDate: date, status: "pending" };
-        const donationReqRes = await publicApi.post(
+        const donationReqRes = await privetApi.post(
             "/api/v1/create-donation-request",
             donationInfo
         );

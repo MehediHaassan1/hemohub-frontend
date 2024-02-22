@@ -5,6 +5,7 @@ import useStateData from "../../../hooks/useStateData";
 import { useForm } from "react-hook-form";
 import usePublicApi from "../../../hooks/usePublicApi";
 import Swal from "sweetalert2";
+import usePrivetApi from "../../../hooks/usePrivetApi";
 
 const imageHostingKey = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const imageHostingURL = `https://api.imgbb.com/1/upload?key=${imageHostingKey}`;
@@ -13,7 +14,7 @@ const MyProfile = () => {
     const { userData, refetch } = useUserData();
     const { divisionData, districtData, subDistrictData } = useStateData();
     const [edit, setEdit] = useState(false);
-    const publicApi = usePublicApi();
+    const privetApi = usePrivetApi();
     const {
         register,
         handleSubmit,
@@ -48,7 +49,7 @@ const MyProfile = () => {
             bloodGroup: data.bloodGroup,
             image,
         };
-        const updateUserInfoRes = await publicApi.patch(
+        const updateUserInfoRes = await privetApi.patch(
             `/api/v1/update-user-info/${userData._id}`,
             updatedInfo
         );

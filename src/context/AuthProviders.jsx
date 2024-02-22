@@ -9,6 +9,7 @@ import {
     signInWithPopup,
 } from "firebase/auth";
 import app from "../firebase/firebase.confiq";
+import usePublicApi from "../hooks/usePublicApi";
 
 export const USER_CONTEXT = createContext(null);
 
@@ -19,6 +20,7 @@ const googleProvider = new GoogleAuthProvider();
 const AuthProviders = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const publicApi = usePublicApi();
 
     const createUser = (email, password) => {
         setLoading(true);
@@ -41,12 +43,19 @@ const AuthProviders = ({ children }) => {
     };
 
     useEffect(() => {
-        const subscribe = onAuthStateChanged(auth, (currentUser) => {
+        const subscribe = onAuthStateChanged(auth, async (currentUser) => {
             if (currentUser) {
                 setUser(currentUser);
-                setLoading(false);
+                const userMail = { email: currentUser.email };
+                const verifyUserRes = await publicApi.post("/jwt", userMail);
+                const token = verifyUserRes.data.token;
+                if (token) {
+                    localStorage.setItem("access-token", token);
+                    setLoading(false);
+                }
             } else {
                 setUser(null);
+                localStorage.removeItem("access-token");
                 setLoading(false);
             }
         });
@@ -54,7 +63,7 @@ const AuthProviders = ({ children }) => {
         return () => {
             return subscribe();
         };
-    }, []);
+    }, [publicApi]);
 
     const authInfo = {
         user,

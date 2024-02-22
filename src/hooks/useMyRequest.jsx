@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import usePublicApi from "./usePublicApi";
 import useUserData from "./useUserData";
 import Loading from "../components/Loading";
+import usePrivetApi from "./usePrivetApi";
 
 const useMyRequest = () => {
-    const publicApi = usePublicApi();
+    const privetApi = usePrivetApi();
     const { userData } = useUserData();
     const {
         data: myDonationReq,
@@ -13,7 +13,7 @@ const useMyRequest = () => {
     } = useQuery({
         queryKey: ["donationReq", userData?.email],
         queryFn: async () => {
-            const donationReqRes = await publicApi(
+            const donationReqRes = await privetApi(
                 `/api/v1/my-donation-request/${userData?.email}`
             );
             return donationReqRes.data;
