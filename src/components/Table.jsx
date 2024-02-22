@@ -1,8 +1,16 @@
 import { FaCheck, FaEdit, FaTrash } from "react-icons/fa";
 import { FaCircleInfo } from "react-icons/fa6";
 import { RxCross2 } from "react-icons/rx";
+import Swal from "sweetalert2";
 
 const Table = ({ myDonationReqs }) => {
+    const handleDonorInfo = (data) => {
+        Swal.fire({
+            title: "Donor Info!",
+            html: `<p>Name: ${data.requesterName}</p><p>Email: ${data.requesterEmail}</p>`,
+            icon: "info",
+        });
+    };
     return (
         <div className="overflow-x-auto">
             <table className="table table-sm">
@@ -40,7 +48,9 @@ const Table = ({ myDonationReqs }) => {
                             )}
 
                             <td className="flex items-center justify-center">
-                                <FaCircleInfo className="w-4 h-4" />
+                                <button onClick={() => handleDonorInfo(data)}>
+                                    <FaCircleInfo className="w-4 h-4 text-accent" />
+                                </button>
                             </td>
                             <td className="space-x-3">
                                 <button>
