@@ -22,17 +22,23 @@ const MyProfile = () => {
     } = useForm();
 
     const onSubmit = async (data) => {
-        const imageData = { image: data.image[0] };
-        const imageHostingRes = await publicApi.post(
-            imageHostingURL,
-            imageData,
-            {
-                headers: {
-                    "content-type": "multipart/form-data",
-                },
-            }
-        );
-        const image = imageHostingRes.data.data.display_url;
+        let image;
+        if (data.image) {
+            const imageData = { image: data.image[0] };
+            const imageHostingRes = await publicApi.post(
+                imageHostingURL,
+                imageData,
+                {
+                    headers: {
+                        "content-type": "multipart/form-data",
+                    },
+                }
+            );
+            image = imageHostingRes.data.data.display_url;
+        } else {
+            image = userData?.image;
+        }
+
         const updatedInfo = {
             name: data.name,
             email: data.email,
@@ -298,12 +304,7 @@ const MyProfile = () => {
                                         edit ? "bg-slate-900 text-txt " : ""
                                     }`}
                                     disabled={edit ? false : true}
-                                    {...register("image", {
-                                        required: {
-                                            value: true,
-                                            message: "Image is required",
-                                        },
-                                    })}
+                                    {...register("image")}
                                 />
                             </label>
                         </div>
