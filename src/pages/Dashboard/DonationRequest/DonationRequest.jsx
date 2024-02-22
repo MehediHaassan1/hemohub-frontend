@@ -51,7 +51,7 @@ const DonationRequest = () => {
 
         const donationInfo = { ...data, donationDate: date, status: "pending" };
         const donationReqRes = await publicApi.post(
-            "/api/v1/donation-request",
+            "/api/v1/create-donation-request",
             donationInfo
         );
         if (donationReqRes.data.insertedId) {
