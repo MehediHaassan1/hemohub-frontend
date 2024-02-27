@@ -1,5 +1,5 @@
 import { FaUserAlt } from "react-icons/fa";
-import { IoLocation } from "react-icons/io5";
+import { VscGitPullRequestCreate } from "react-icons/vsc";
 import { NavLink, Outlet } from "react-router-dom";
 import useUserData from "../hooks/useUserData";
 import { TbGitPullRequest } from "react-icons/tb";
@@ -46,20 +46,13 @@ const Dashboard = () => {
                                 <FaUserAlt className="w-5 h-5 text-accent"></FaUserAlt>{" "}
                                 My Profile
                             </NavLink>
-                            <NavLink
-                                className="flex items-center gap-2 border p-2 rounded-md text-txt"
-                                to="my-address"
-                            >
-                                <IoLocation className="w-5 h-5 text-accent"></IoLocation>{" "}
-                                My Address
-                            </NavLink>
                             {userData?.role === "donor" && (
                                 <>
                                     <NavLink
                                         className="flex items-center gap-2 border p-2 rounded-md text-txt"
                                         to="create-donation-request"
                                     >
-                                        <TbGitPullRequest className="w-5 h-5 text-accent"></TbGitPullRequest>{" "}
+                                        <VscGitPullRequestCreate className="w-5 h-5 text-accent"></VscGitPullRequestCreate>{" "}
                                         Create Request
                                     </NavLink>
                                     <NavLink
@@ -67,7 +60,7 @@ const Dashboard = () => {
                                         to="my-donation-requests"
                                     >
                                         <TbGitPullRequest className="w-5 h-5 text-accent"></TbGitPullRequest>{" "}
-                                        My Request
+                                        My Requests
                                     </NavLink>
                                 </>
                             )}

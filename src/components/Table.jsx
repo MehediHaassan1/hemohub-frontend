@@ -54,7 +54,16 @@ const Table = ({ myDonationReqs, handleUpdateStatus }) => {
                                     </button>
                                 </td>
                             ) : (
-                                <td>{data.status}</td>
+                                <td
+                                    className={`${
+                                        (data.status === "canceled" &&
+                                            "text-red-400") ||
+                                        (data.status === "done" &&
+                                            "text-green-400")
+                                    } capitalize`}
+                                >
+                                    {data.status}
+                                </td>
                             )}
 
                             <td className="flex items-center justify-center">
