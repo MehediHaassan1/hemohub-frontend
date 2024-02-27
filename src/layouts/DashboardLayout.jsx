@@ -3,6 +3,7 @@ import { VscGitPullRequestCreate } from "react-icons/vsc";
 import { NavLink, Outlet } from "react-router-dom";
 import useUserData from "../hooks/useUserData";
 import { TbGitPullRequest } from "react-icons/tb";
+import { FaUsers } from "react-icons/fa6";
 
 const Dashboard = () => {
     const { userData } = useUserData();
@@ -61,6 +62,17 @@ const Dashboard = () => {
                                     >
                                         <TbGitPullRequest className="w-5 h-5 text-accent"></TbGitPullRequest>{" "}
                                         My Requests
+                                    </NavLink>
+                                </>
+                            )}
+                            {userData?.role === "admin" && (
+                                <>
+                                    <NavLink
+                                        className="flex items-center gap-2 border p-2 rounded-md text-txt"
+                                        to="all-users"
+                                    >
+                                        <FaUsers className="w-5 h-5 text-accent"></FaUsers>
+                                        All Users
                                     </NavLink>
                                 </>
                             )}

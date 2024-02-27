@@ -6,7 +6,6 @@ import usePrivetApi from "./usePrivetApi";
 
 const useUserData = () => {
     const { user } = useContext(USER_CONTEXT);
-    const publicApi = usePublicApi();
     const privetApi = usePrivetApi();
 
     const {
