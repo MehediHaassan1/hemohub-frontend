@@ -2,10 +2,39 @@ import useAllUsers from "../../../hooks/useAllUsers";
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { FaEllipsisVertical } from "react-icons/fa6";
+import usePrivetApi from "../../../hooks/usePrivetApi";
+import Swal from "sweetalert2";
 
 const AllUsers = () => {
     const { allUsers, refetch } = useAllUsers();
-    console.log(allUsers);
+    const privetApi = usePrivetApi();
+    const handleStatusChange = (id, status) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: `Yes, ${status} it!`,
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const statusInfo = { status };
+                const confirmationRes = await privetApi.patch(
+                    `/api/v1/update-user-info/${id}`,
+                    statusInfo
+                );
+                if (confirmationRes?.data?.modifiedCount > 0) {
+                    Swal.fire({
+                        title: `${status}!`,
+                        text: `User has been ${status}.`,
+                        icon: "success",
+                    });
+                    refetch();
+                }
+            }
+        });
+    };
     return (
         <div>
             <h1 className="pb-5 border-b border-dashed text-3xl text-center">
@@ -15,12 +44,12 @@ const AllUsers = () => {
                 <table className="table">
                     <thead>
                         <tr>
-                            <th>#</th>
-                            <th>Avatar</th>
-                            <th>Email</th>
-                            <th>Name</th>
-                            <th>Status</th>
-                            <th className="text-center">Actions</th>
+                            <th className="text-txt">#</th>
+                            <th className="text-txt">Avatar</th>
+                            <th className="text-txt">Email</th>
+                            <th className="text-txt">Name</th>
+                            <th className="text-txt">Status</th>
+                            <th className="text-center text-txt">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -50,16 +79,11 @@ const AllUsers = () => {
                                 <td>{user?.email}</td>
                                 <td>{user?.name}</td>
                                 <td>{user?.status}</td>
-                                {/* <td className="text-center">
-                                    <button>
-                                        <FaEllipsisVertical />
-                                    </button>
-                                </td> */}
                                 <td>
                                     <div className="w-fit text-right">
                                         <Menu
                                             as="div"
-                                            className="relative inline-block text-left"
+                                            className="relative inline-block"
                                         >
                                             <div>
                                                 <Menu.Button className="inline-flex w-full justify-center rounded-md bg-black/20 px-4 py-2 text-sm font-medium text-white hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75">
@@ -78,7 +102,7 @@ const AllUsers = () => {
                                                 leaveFrom="transform opacity-100 scale-100"
                                                 leaveTo="transform opacity-0 scale-95"
                                             >
-                                                <Menu.Items className="fixed z-10  mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
+                                                <Menu.Items className="fixed md:right-16 lg:right-48 z-10  mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
                                                     <div className="px-1 py-1 ">
                                                         {user?.status ===
                                                         "active" ? (
@@ -87,13 +111,19 @@ const AllUsers = () => {
                                                                     active,
                                                                 }) => (
                                                                     <button
+                                                                        onClick={() =>
+                                                                            handleStatusChange(
+                                                                                user?._id,
+                                                                                "blocked"
+                                                                            )
+                                                                        }
                                                                         className={`${
                                                                             active
                                                                                 ? "bg-violet-500 text-white"
                                                                                 : "text-gray-900"
                                                                         } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                                                     >
-                                                                       Blocked  
+                                                                        Blocked
                                                                     </button>
                                                                 )}
                                                             </Menu.Item>
@@ -103,13 +133,19 @@ const AllUsers = () => {
                                                                     active,
                                                                 }) => (
                                                                     <button
+                                                                        onClick={() =>
+                                                                            handleStatusChange(
+                                                                                user?._id,
+                                                                                "active"
+                                                                            )
+                                                                        }
                                                                         className={`${
                                                                             active
                                                                                 ? "bg-violet-500 text-white"
                                                                                 : "text-gray-900"
                                                                         } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                                                     >
-                                                                       Active
+                                                                        Active
                                                                     </button>
                                                                 )}
                                                             </Menu.Item>
