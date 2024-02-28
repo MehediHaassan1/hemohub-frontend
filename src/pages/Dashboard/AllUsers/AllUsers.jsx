@@ -4,10 +4,13 @@ import { Fragment } from "react";
 import { FaEllipsisVertical } from "react-icons/fa6";
 import usePrivetApi from "../../../hooks/usePrivetApi";
 import Swal from "sweetalert2";
+import useAdmin from "../../../hooks/useAdmin";
 
 const AllUsers = () => {
     const { allUsers, refetch } = useAllUsers();
     const privetApi = usePrivetApi();
+    const { isAdmin } = useAdmin();
+    console.log(isAdmin);
     const handleStatusChange = (id, status) => {
         Swal.fire({
             title: "Are you sure?",
