@@ -1,4 +1,4 @@
-import { FaUserAlt } from "react-icons/fa";
+import { FaHome, FaUserAlt } from "react-icons/fa";
 import { VscGitPullRequestCreate } from "react-icons/vsc";
 import { NavLink, Outlet } from "react-router-dom";
 import useUserData from "../hooks/useUserData";
@@ -74,8 +74,23 @@ const Dashboard = () => {
                                         <FaUsers className="w-5 h-5 text-accent"></FaUsers>
                                         All Users
                                     </NavLink>
+                                    <NavLink
+                                        className="flex items-center gap-2 border p-2 rounded-md text-txt"
+                                        to="all-blood-donation-request"
+                                    >
+                                        <TbGitPullRequest className="w-5 h-5 text-accent"></TbGitPullRequest>
+                                        All Requests
+                                    </NavLink>
                                 </>
                             )}
+                            <div className="divider"></div>
+                            <NavLink
+                                className="flex items-center gap-2 border p-2 rounded-md text-txt"
+                                to="/"
+                            >
+                                <FaHome className="w-5 h-5 text-accent"></FaHome>
+                                Home
+                            </NavLink>
                         </div>
                     </div>
                     <div className="text-white md:col-span-8 lg:col-span-9 bg-slate-700 p-4 lg:p-10 rounded-md">

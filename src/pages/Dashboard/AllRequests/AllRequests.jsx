@@ -1,11 +1,10 @@
-import useMyRequest from "../../../hooks/useMyRequest";
-import useUserData from "../../../hooks/useUserData";
-import Table from "../../../components/Table";
 import Swal from "sweetalert2";
+import Table from "../../../components/Table";
+import useAllRequest from "../../../hooks/useAllRequest";
 import usePrivetApi from "../../../hooks/usePrivetApi";
 
-const MyDonation = () => {
-    const { myDonationReq: myDonationReqs, refetch } = useMyRequest();
+const AllRequests = () => {
+    const { allRequests, refetch } = useAllRequest();
     const privetApi = usePrivetApi();
 
     const handleUpdateStatus = (status, data) => {
@@ -42,7 +41,7 @@ const MyDonation = () => {
             </div>
             <div>
                 <Table
-                    donationRequests={myDonationReqs}
+                    donationRequests={allRequests}
                     handleUpdateStatus={handleUpdateStatus}
                 ></Table>
             </div>
@@ -50,4 +49,4 @@ const MyDonation = () => {
     );
 };
 
-export default MyDonation;
+export default AllRequests;

@@ -10,6 +10,7 @@ import MyProfile from "../pages/Dashboard/MyProfile/MyProfile";
 import DonationRequest from "../pages/Dashboard/DonationRequest/DonationRequest";
 import MyDonation from "../pages/Dashboard/MyDonation/MyDonation";
 import AllUsers from "../pages/Dashboard/AllUsers/AllUsers";
+import AllRequests from "../pages/Dashboard/AllRequests/AllRequests";
 
 const router = createBrowserRouter([
     {
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
             {
                 path: "all-users",
                 element: <AllUsers></AllUsers>,
+            },
+            {
+                path: "all-blood-donation-request",
+                element: <AllRequests></AllRequests>,
             },
         ],
     },
