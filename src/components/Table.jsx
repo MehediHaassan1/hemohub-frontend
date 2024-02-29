@@ -5,9 +5,15 @@ import useUserData from "../hooks/useUserData";
 import { IoMdDoneAll } from "react-icons/io";
 import { MdCancel } from "react-icons/md";
 import { HiBadgeCheck } from "react-icons/hi";
+import { useLocation } from "react-router-dom";
 
-const Table = ({ donationRequests, handleUpdateStatus }) => {
+const Table = ({
+    donationRequests,
+    handleUpdateStatus,
+    handleDeleteDonation,
+}) => {
     const { userData } = useUserData();
+    const { pathname } = useLocation();
     const handleDonorInfo = (data) => {
         Swal.fire({
             title: "Donor Info!",
@@ -27,7 +33,7 @@ const Table = ({ donationRequests, handleUpdateStatus }) => {
                         <th>Time</th>
                         <th>Status</th>
                         <th>Donar Info</th>
-                        <th>Action</th>
+                        {pathname !== "/dashboard" && <th>Action</th>}
                     </tr>
                 </thead>
                 <tbody>
@@ -104,7 +110,7 @@ const Table = ({ donationRequests, handleUpdateStatus }) => {
                                         <div className="space-x-2 flex items-center justify-center">
                                             <button
                                                 title="Done"
-                                                className="text-green-400"
+                                                className="text-green-400 bg-slate-900 p-1 rounded"
                                                 onClick={() =>
                                                     handleUpdateStatus(
                                                         "Done",
@@ -115,7 +121,7 @@ const Table = ({ donationRequests, handleUpdateStatus }) => {
                                                 <FaCheck className="w-4 h-4"></FaCheck>
                                             </button>
                                             <button
-                                                className="text-red-400"
+                                                className="text-red-400 bg-slate-900 p-1 rounded"
                                                 title="Cancel"
                                                 onClick={() =>
                                                     handleUpdateStatus(
@@ -128,27 +134,37 @@ const Table = ({ donationRequests, handleUpdateStatus }) => {
                                             </button>
                                         </div>
                                     ) : (
-                                        <p
+                                        <div
                                             className={`${
                                                 (data.status === "Canceled" &&
                                                     "text-red-400") ||
                                                 (data.status === "Done" &&
                                                     "text-green-400")
-                                            } flex items-center justify-center bg-orange-500 p-2`}
+                                            } flex items-center justify-center`}
                                         >
-                                            {(data.status === "Done" && (
-                                                <HiBadgeCheck
-                                                    title="Done"
-                                                    className="h-4 w-4"
-                                                />
-                                            )) ||
-                                                (data.status === "Canceled" && (
-                                                    <MdCancel
-                                                        title="Canceled"
-                                                        className="h-4 w-4 "
+                                            <button className="bg-slate-900 rounded p-1">
+                                                {(data.status === "Done" && (
+                                                    <HiBadgeCheck
+                                                        title="Done"
+                                                        className="h-4 w-4"
                                                     />
-                                                ))}
-                                        </p>
+                                                )) ||
+                                                    (data.status ===
+                                                        "Canceled" && (
+                                                        <MdCancel
+                                                            title="Canceled"
+                                                            className="h-4 w-4 "
+                                                        />
+                                                    )) ||
+                                                    (data.status ===
+                                                        "Pending" && (
+                                                        <FaCheck
+                                                            title="Pending"
+                                                            className="h-4 w-4"
+                                                        ></FaCheck>
+                                                    ))}
+                                            </button>
+                                        </div>
                                     )}
                                 </td>
                             )}
@@ -161,14 +177,38 @@ const Table = ({ donationRequests, handleUpdateStatus }) => {
                                     </button>
                                 </div>
                             </td>
-                            <td className="space-x-2">
-                                <button>
-                                    <FaEdit className="w-4 h-4"></FaEdit>
-                                </button>
-                                <button>
-                                    <FaTrash className="w-4 h-4"></FaTrash>
-                                </button>
-                            </td>
+                            {pathname !== "/dashboard" && (
+                                <td className="space-x-2">
+                                    {data.status === "Canceled" ? (
+                                        <div className="flex items-center justify-center">
+                                            <button
+                                                onClick={() =>
+                                                    handleDeleteDonation(
+                                                        data?._id
+                                                    )
+                                                }
+                                            >
+                                                <FaTrash className="w-4 h-4 text-red-400"></FaTrash>
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <div className="flex gap-2 items-center justify-center">
+                                            <button>
+                                                <FaEdit className="w-4 h-4"></FaEdit>
+                                            </button>
+                                            <button
+                                                onClick={() =>
+                                                    handleDeleteDonation(
+                                                        data?._id
+                                                    )
+                                                }
+                                            >
+                                                <FaTrash className="w-4 h-4 text-red-400"></FaTrash>
+                                            </button>
+                                        </div>
+                                    )}
+                                </td>
+                            )}
                         </tr>
                     ))}
                 </tbody>

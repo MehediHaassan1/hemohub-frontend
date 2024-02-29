@@ -22,6 +22,14 @@ const DonationRequest = () => {
     const [startDate, setStartDate] = useState(new Date());
     const { districtData, subDistrictData } = useStateData();
     const onSubmit = async (data) => {
+        if (userData?.status === "blocked") {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Blocked user can't make request",
+            });
+            return;
+        }
         if (data.bloodGroup === "Pick one") {
             Swal.fire({
                 icon: "error",
@@ -49,7 +57,7 @@ const DonationRequest = () => {
         }
         const date = moment(startDate).format("DD-MM-YYYY");
 
-        const donationInfo = { ...data, donationDate: date, status: "pending" };
+        const donationInfo = { ...data, donationDate: date, status: "Pending" };
         const donationReqRes = await privetApi.post(
             "/api/v1/create-donation-request",
             donationInfo
@@ -63,6 +71,7 @@ const DonationRequest = () => {
                 timer: 2000,
             });
             reset();
+            setEdit(false);
         }
     };
 
@@ -126,9 +135,15 @@ const DonationRequest = () => {
                                 <input
                                     type="text"
                                     placeholder="Type here"
-                                    className={`input w-full text-txt focus:border-primary
-                                     focus:outline-none text-lg border border-primary 
-                                     bg-transparent focus:bg-slate-900`}
+                                    readOnly={edit ? false : true}
+                                    className={`input w-full text-txt focus:border-primary focus:outline-none 
+                                    text-lg border border-primary text-white 
+                                    ${
+                                        edit
+                                            ? "bg-slate-900"
+                                            : " bg-transparent cursor-not-allowed"
+                                    }
+                                    `}
                                     {...register("recipientName", {
                                         required: {
                                             value: true,
@@ -155,7 +170,13 @@ const DonationRequest = () => {
                                 </div>
                                 <select
                                     className={`input w-full text-txt focus:border-primary focus:outline-none 
-                                        text-lg border border-primary bg-transparent focus:bg-slate-900`}
+                                       text-lg border border-primary disabled:bg-transparent disabled:border-primary  disabled:text-txt ${
+                                           edit
+                                               ? "bg-slate-900 text-txt"
+                                               : "cursor-"
+                                       }
+                                       `}
+                                    disabled={edit ? false : true}
                                     defaultValue="Pick one"
                                     {...register("bloodGroup")}
                                 >
@@ -213,7 +234,11 @@ const DonationRequest = () => {
                                 </div>
                                 <select
                                     className={`input w-full text-txt focus:border-primary focus:outline-none 
-                                        text-lg border border-primary bg-transparent focus:bg-slate-900`}
+                                    text-lg border border-primary disabled:bg-transparent disabled:border-primary  disabled:text-txt ${
+                                        edit ? "bg-slate-900 text-txt" : ""
+                                    }
+                                    `}
+                                    disabled={edit ? false : true}
                                     defaultValue="Pick one"
                                     {...register("district")}
                                 >
@@ -248,7 +273,11 @@ const DonationRequest = () => {
                                 </div>
                                 <select
                                     className={`input w-full text-txt focus:border-primary focus:outline-none 
-                                        text-lg border border-primary bg-transparent focus:bg-slate-900`}
+                                   text-lg border border-primary disabled:bg-transparent disabled:border-primary  disabled:text-txt ${
+                                       edit ? "bg-slate-900 text-txt" : ""
+                                   }
+                                   `}
+                                    disabled={edit ? false : true}
                                     defaultValue="Pick one"
                                     {...register("subDistrict")}
                                 >
@@ -284,8 +313,15 @@ const DonationRequest = () => {
                                     </span>
                                 </div>
                                 <textarea
-                                    className={`textarea h-12  w-full text-txt focus:border-primary focus:outline-none 
-                                        text-lg border border-primary bg-transparent focus:bg-slate-900`}
+                                    readOnly={edit ? false : true}
+                                    className={`textarea h-12 w-full text-txt focus:border-primary focus:outline-none 
+                                    text-lg border border-primary text-white 
+                                    ${
+                                        edit
+                                            ? "bg-slate-900"
+                                            : " bg-transparent cursor-not-allowed"
+                                    }
+                                    `}
                                     placeholder="Type here"
                                     {...register("address", {
                                         required: {
@@ -311,8 +347,15 @@ const DonationRequest = () => {
                                     </span>
                                 </div>
                                 <textarea
+                                    readOnly={edit ? false : true}
                                     className={`textarea h-12 w-full text-txt focus:border-primary focus:outline-none 
-                                        text-lg border border-primary bg-transparent focus:bg-slate-900`}
+                                    text-lg border border-primary text-white 
+                                    ${
+                                        edit
+                                            ? "bg-slate-900"
+                                            : " bg-transparent cursor-not-allowed"
+                                    }
+                                    `}
                                     placeholder="Type here"
                                     {...register("hospitalName", {
                                         required: {
@@ -345,8 +388,13 @@ const DonationRequest = () => {
                                     onChange={(date) => setStartDate(date)}
                                     minDate={new Date()}
                                     dateFormat="dd/MM/yyyy"
-                                    className="w-full text-txt focus:border-primary focus:outline-none 
-                                    text-lg border border-primary bg-transparent focus:bg-slate-900 h-12 rounded py-4 px-3"
+                                    disabled={edit ? false : true}
+                                    className={`w-full text-txt focus:border-primary focus:outline-none 
+                                    text-lg border border-primary h-12 rounded py-4 px-3 ${
+                                        edit
+                                            ? "bg-slate-900"
+                                            : "bg-transparent cursor-not-allowed"
+                                    }`}
                                 />
                                 <div className="label">
                                     <span className="label-text-alt text-red-400 text-base"></span>
@@ -363,8 +411,13 @@ const DonationRequest = () => {
                                 <input
                                     type="time"
                                     placeholder="type here"
-                                    className="w-full text-txt focus:border-primary focus:outline-none 
-                                    text-lg border border-primary bg-transparent focus:bg-slate-900 h-12 rounded py-4 px-3"
+                                    disabled={edit ? false : true}
+                                    className={`w-full text-txt focus:border-primary focus:outline-none 
+                                    text-lg border border-primary  h-12 rounded py-4 px-3 ${
+                                        edit
+                                            ? "bg-slate-900 cursor-pointer"
+                                            : "bg-transparent cursor-not-allowed"
+                                    }`}
                                     {...register("donationTime", {
                                         required: {
                                             value: true,
@@ -391,8 +444,15 @@ const DonationRequest = () => {
                                 </span>
                             </div>
                             <textarea
+                                readOnly={edit ? false : true}
                                 className={`textarea w-full text-txt focus:border-primary focus:outline-none 
-                                        text-lg border border-primary bg-transparent focus:bg-slate-900`}
+                                 text-lg border border-primary text-white 
+                                 ${
+                                     edit
+                                         ? "bg-slate-900"
+                                         : " bg-transparent cursor-not-allowed"
+                                 }
+                                 `}
                                 placeholder="Type here"
                                 {...register("message", {
                                     required: {
@@ -412,9 +472,12 @@ const DonationRequest = () => {
                     </div>
                     <div>
                         <input
+                            disabled={edit ? false : true}
                             type="submit"
                             value="Request"
-                            className="bg-primary w-full mt-4 rounded py-3 text-lg tracking-widest cursor-pointer"
+                            className={`bg-primary w-full mt-4 rounded py-3 text-lg tracking-widest ${
+                                edit ? "cursor-pointer" : "cursor-not-allowed"
+                            }`}
                         />
                     </div>
                 </form>

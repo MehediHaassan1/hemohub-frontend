@@ -83,7 +83,7 @@ const Dashboard = () => {
                                     </NavLink>
                                 </>
                             )}
-                            <div className="divider"></div>
+                            <div className="divider divider-neutral"></div>
                             <NavLink
                                 className="flex items-center gap-2 border p-2 rounded-md text-txt"
                                 to="/"
