@@ -19,7 +19,6 @@ const useMyRequest = () => {
             return donationReqRes.data;
         },
     });
-    if (isLoading) return <Loading></Loading>;
 
     return { myDonationReq, refetch };
 };

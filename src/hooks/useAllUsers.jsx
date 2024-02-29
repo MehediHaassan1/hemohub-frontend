@@ -18,8 +18,6 @@ const useAllUsers = () => {
         },
     });
 
-    if (isLoading || isPending) return <Loading></Loading>;
-
     return { allUsers, isPending, isLoading, refetch };
 };
 

@@ -6,7 +6,6 @@ const useStats = () => {
     const privetApi = usePrivetApi();
     const {
         data: stats,
-        isPending,
         isLoading,
     } = useQuery({
         queryKey: ["stats"],
@@ -15,8 +14,6 @@ const useStats = () => {
             return statsRes.data;
         },
     });
-
-    if (isPending || isLoading) return <Loading></Loading>;
 
     return { stats };
 };

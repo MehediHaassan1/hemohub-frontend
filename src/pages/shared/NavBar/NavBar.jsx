@@ -4,9 +4,11 @@ import { useContext } from "react";
 import { USER_CONTEXT } from "../../../context/AuthProviders";
 import Swal from "sweetalert2";
 import { FaUserCircle } from "react-icons/fa";
+import useUserData from "../../../hooks/useUserData";
 
 const NavBar = () => {
     const { user, logOutUser } = useContext(USER_CONTEXT);
+    const { userData } = useUserData();
 
     const handleLogOut = () => {
         logOutUser()
@@ -117,10 +119,10 @@ const NavBar = () => {
                                 className="btn btn-ghost btn-circle avatar"
                             >
                                 <div className="w-10 rounded-full">
-                                    {user?.displayURl ? (
+                                    {userData?.image ? (
                                         <img
                                             alt="Tailwind CSS Navbar component"
-                                            src={user?.displayURl}
+                                            src={userData?.image}
                                         />
                                     ) : (
                                         <div className="flex items-center justify-center p-1">

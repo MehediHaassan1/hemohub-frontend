@@ -1,12 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import usePublicApi from "./usePublicApi";
-import Loading from "../components/Loading";
 
 const useStateData = () => {
     const publicApi = usePublicApi();
 
     // division query
-    const { data: divisionData, isLoading: divisionIsLoading } = useQuery({
+    const { data: divisionData } = useQuery({
         queryKey: ["divisionData"],
         queryFn: async () => {
             const divisionRes = await publicApi.get("/api/v1/divisions");
@@ -15,7 +14,7 @@ const useStateData = () => {
     });
 
     // district query
-    const { data: districtData, isLoading: districtIsLoading } = useQuery({
+    const { data: districtData} = useQuery({
         queryKey: ["districtData "],
         queryFn: async () => {
             const districtRes = await publicApi.get("/api/v1/districts");
@@ -24,7 +23,7 @@ const useStateData = () => {
     });
 
     // district query
-    const { data: subDistrictData, isLoading: subdistrictIsLoading } = useQuery(
+    const { data: subDistrictData} = useQuery(
         {
             queryKey: ["subdistricts "],
             queryFn: async () => {
@@ -35,9 +34,6 @@ const useStateData = () => {
             },
         }
     );
-
-    if (divisionIsLoading || districtIsLoading || subdistrictIsLoading)
-        return <Loading></Loading>;
 
     return { divisionData, districtData, subDistrictData };
 };

@@ -1,11 +1,10 @@
 import { useContext } from "react";
 import { USER_CONTEXT } from "../context/AuthProviders";
 import { useQuery } from "@tanstack/react-query";
-import usePublicApi from "./usePublicApi";
 import usePrivetApi from "./usePrivetApi";
 
 const useUserData = () => {
-    const { user } = useContext(USER_CONTEXT);
+    const { user, loading } = useContext(USER_CONTEXT);
     const privetApi = usePrivetApi();
 
     const {
@@ -15,6 +14,7 @@ const useUserData = () => {
         refetch,
     } = useQuery({
         queryKey: ["userData", user?.uid],
+        enabled: !loading,
         queryFn: async () => {
             const userRes = await privetApi.get(`/api/v1/user/${user?.uid}`);
             return userRes.data;
