@@ -3,9 +3,11 @@ import useUserData from "../../../hooks/useUserData";
 import Table from "../../../components/Table";
 import Swal from "sweetalert2";
 import usePrivetApi from "../../../hooks/usePrivetApi";
+import { useState } from "react";
 
 const MyDonation = () => {
-    const { myDonationReq: myDonationReqs, refetch } = useMyRequest();
+    const [status, setStatus] = useState("default");
+    const { myDonationReq: myDonationReqs, refetch } = useMyRequest(status);
     const privetApi = usePrivetApi();
 
     const handleUpdateStatus = (status, data) => {
@@ -61,10 +63,37 @@ const MyDonation = () => {
         });
     };
 
+    const handleStatusChange = (e) => {
+        setStatus(e.target.value);
+    };
+
     return (
         <div>
-            <div className="pb-5 mb-5 border-b border-dashed">
-                <h1 className="text-3xl text-center">My Donation Request</h1>
+            <div className="pb-5 mb-5 border-b border-dashed flex items-center justify-between">
+                <h1 className="text-3xl">My Donation Request</h1>
+                <div>
+                    <select
+                        onChange={handleStatusChange}
+                        className="select select-border border-primary focus:outline-none focus:border-primary bg-transparent"
+                        defaultValue="default"
+                    >
+                        <option className="bg-slate-900" value="default">
+                            Default
+                        </option>
+                        <option className="bg-slate-900" value="Pending">
+                            Pending
+                        </option>
+                        <option className="bg-slate-900" value="Inprogress">
+                            Inprogress
+                        </option>
+                        <option className="bg-slate-900" value="Done">
+                            Done
+                        </option>
+                        <option className="bg-slate-900" value="Canceled">
+                            Canceled
+                        </option>
+                    </select>
+                </div>
             </div>
             <div>
                 <Table

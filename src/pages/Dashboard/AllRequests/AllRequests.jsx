@@ -44,7 +44,7 @@ const AllRequests = () => {
     return (
         <div>
             <div className="pb-5 mb-5 border-b border-dashed flex items-center justify-between">
-                <h1 className="text-3xl text-center">All Donation Request</h1>
+                <h1 className="text-3xl">All Donation Request</h1>
                 <div>
                     <select
                         onChange={handleStatusChange}

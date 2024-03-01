@@ -1,9 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import useUserData from "./useUserData";
-import Loading from "../components/Loading";
 import usePrivetApi from "./usePrivetApi";
 
-const useMyRequest = () => {
+const useMyRequest = (status) => {
     const privetApi = usePrivetApi();
     const { userData } = useUserData();
     const {
@@ -11,10 +10,10 @@ const useMyRequest = () => {
         isLoading,
         refetch,
     } = useQuery({
-        queryKey: ["donationReq", userData?.email],
+        queryKey: ["donationReq", userData?.email, status],
         queryFn: async () => {
             const donationReqRes = await privetApi(
-                `/api/v1/my-donation-request/${userData?.email}`
+                `/api/v1/my-donation-request/${userData?.email}?status=${status}`
             );
             return donationReqRes.data;
         },
