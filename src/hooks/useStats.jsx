@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import usePrivetApi from "./usePrivetApi";
-import Loading from "../components/Loading";
 
 const useStats = () => {
     const privetApi = usePrivetApi();

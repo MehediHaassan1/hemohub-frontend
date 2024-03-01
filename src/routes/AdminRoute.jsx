@@ -7,11 +7,12 @@ import { Navigate, useLocation } from "react-router-dom";
 const AdminRoute = ({ children }) => {
     const { isAdmin, isLoading } = useAdmin();
     const { user, loading } = useContext(USER_CONTEXT);
-    
+
     const location = useLocation();
 
     if (loading || isLoading) return <Loading></Loading>;
-    if (user && isAdmin) return children;
+    if ((user && isAdmin?.admin) || (user && isAdmin?.volunteer))
+        return children;
     return <Navigate to="/" state={{ from: location }} replace></Navigate>;
 };
 

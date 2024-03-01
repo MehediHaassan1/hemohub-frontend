@@ -51,7 +51,8 @@ const Dashboard = () => {
                     handleUpdateStatus={handleUpdateStatus}
                 ></LatestReq>
             )}
-            {isAdmin && <Stats></Stats>}
+            {(isAdmin?.admin && <Stats></Stats>) ||
+                (isAdmin?.volunteer && <Stats></Stats>)}
         </div>
     );
 };

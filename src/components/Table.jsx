@@ -6,6 +6,8 @@ import { IoMdDoneAll } from "react-icons/io";
 import { MdCancel } from "react-icons/md";
 import { HiBadgeCheck } from "react-icons/hi";
 import { useLocation } from "react-router-dom";
+import StatusButton from "./StatusButton";
+import ActionButtons from "./ActionButtons";
 
 const Table = ({
     donationRequests,
@@ -33,7 +35,10 @@ const Table = ({
                         <th>Time</th>
                         <th>Status</th>
                         <th>Donar Info</th>
-                        {pathname !== "/dashboard" && <th>Action</th>}
+                        {pathname !== "/dashboard" &&
+                            userData?.role === "admin" && <th>Action</th>}
+                        {pathname !== "/dashboard" &&
+                            userData?.role === "donor" && <th>Action</th>}
                     </tr>
                 </thead>
                 <tbody>
@@ -45,65 +50,24 @@ const Table = ({
                             <td>{data.donationDate}</td>
                             <td>{data.donationTime}</td>
                             {userData?.role === "admin" && (
-                                <td
-                                    className={`${
-                                        (data.status === "Canceled" &&
-                                            "text-red-400") ||
-                                        (data.status === "Done" &&
-                                            "text-green-400") ||
-                                        (data.status === "Inprogress" &&
-                                            "text-yellow-400")
-                                    }`}
-                                >
-                                    {data.status === "Pending" ? (
-                                        <div className="flex items-center justify-center">
-                                            <button
-                                                className="bg-slate-800 p-1 rounded"
-                                                title="Make Progress"
-                                                onClick={() =>
-                                                    handleUpdateStatus(
-                                                        "Inprogress",
-                                                        data
-                                                    )
-                                                }
-                                            >
-                                                <FaCheck className="h-4 w-4" />
-                                            </button>
-                                        </div>
-                                    ) : (
-                                        (data.status === "Done" && (
-                                            <div className="flex items-center justify-center ">
-                                                <button className="bg-slate-800 rounded p-1">
-                                                    <HiBadgeCheck
-                                                        title="Done"
-                                                        className="h-4 w-4 "
-                                                    />
-                                                </button>
-                                            </div>
-                                        )) ||
-                                        (data.status === "Canceled" && (
-                                            <div className="flex items-center justify-center ">
-                                                <button className="bg-slate-800 rounded p-1">
-                                                    <MdCancel
-                                                        title="Canceled"
-                                                        className="h-4 w-4 "
-                                                    />
-                                                </button>
-                                            </div>
-                                        )) ||
-                                        (data.status === "Inprogress" && (
-                                            <div className="flex items-center justify-center ">
-                                                <button className="bg-slate-800 rounded p-1">
-                                                    <IoMdDoneAll
-                                                        title="Inprogress"
-                                                        className="h-4 w-4"
-                                                    />
-                                                </button>
-                                            </div>
-                                        ))
-                                    )}
-                                </td>
+                                <StatusButton
+                                    role={userData?.role}
+                                    status={data.status}
+                                    handleUpdateStatus={() =>
+                                        handleUpdateStatus("Inprogress", data)
+                                    }
+                                />
                             )}
+                            {userData?.role === "volunteer" && (
+                                <StatusButton
+                                    role={userData?.role}
+                                    status={data.status}
+                                    handleUpdateStatus={() =>
+                                        handleUpdateStatus("Inprogress", data)
+                                    }
+                                />
+                            )}
+
                             {userData?.role === "donor" && (
                                 <td className="">
                                     {data.status === "Inprogress" ? (
@@ -177,37 +141,81 @@ const Table = ({
                                     </button>
                                 </div>
                             </td>
+                            {/* {pathname !== "/dashboard" &&
+                                userData?.role === "admin" && (
+                                    <td className="space-x-2">
+                                        {data.status === "Canceled" ||
+                                        data.status === "Done" ? (
+                                            <div className="flex items-center justify-center">
+                                                <button
+                                                    onClick={() =>
+                                                        handleDeleteDonation(
+                                                            data?._id
+                                                        )
+                                                    }
+                                                >
+                                                    <FaTrash className="w-4 h-4 text-red-400"></FaTrash>
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <div className="flex gap-2 items-center justify-center">
+                                                <button>
+                                                    <FaEdit className="w-4 h-4"></FaEdit>
+                                                </button>
+                                                <button
+                                                    onClick={() =>
+                                                        handleDeleteDonation(
+                                                            data?._id
+                                                        )
+                                                    }
+                                                >
+                                                    <FaTrash className="w-4 h-4 text-red-400"></FaTrash>
+                                                </button>
+                                            </div>
+                                        )}
+                                    </td>
+                                )} */}
+                            {/* {pathname !== "/dashboard" &&
+                                userData?.role === "donor" && (
+                                    <td className="space-x-2">
+                                        {data.status === "Canceled" ||
+                                        data.status === "Done" ? (
+                                            <div className="flex items-center justify-center">
+                                                <button
+                                                    onClick={() =>
+                                                        handleDeleteDonation(
+                                                            data?._id
+                                                        )
+                                                    }
+                                                >
+                                                    <FaTrash className="w-4 h-4 text-red-400"></FaTrash>
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <div className="flex gap-2 items-center justify-center">
+                                                <button>
+                                                    <FaEdit className="w-4 h-4"></FaEdit>
+                                                </button>
+                                                <button
+                                                    onClick={() =>
+                                                        handleDeleteDonation(
+                                                            data?._id
+                                                        )
+                                                    }
+                                                >
+                                                    <FaTrash className="w-4 h-4 text-red-400"></FaTrash>
+                                                </button>
+                                            </div>
+                                        )}
+                                    </td>
+                                )} */}
                             {pathname !== "/dashboard" && (
-                                <td className="space-x-2">
-                                    {data.status === "Canceled" || data.status === 'Done' ? (
-                                        <div className="flex items-center justify-center">
-                                            <button
-                                                onClick={() =>
-                                                    handleDeleteDonation(
-                                                        data?._id
-                                                    )
-                                                }
-                                            >
-                                                <FaTrash className="w-4 h-4 text-red-400"></FaTrash>
-                                            </button>
-                                        </div>
-                                    ) : (
-                                        <div className="flex gap-2 items-center justify-center">
-                                            <button>
-                                                <FaEdit className="w-4 h-4"></FaEdit>
-                                            </button>
-                                            <button
-                                                onClick={() =>
-                                                    handleDeleteDonation(
-                                                        data?._id
-                                                    )
-                                                }
-                                            >
-                                                <FaTrash className="w-4 h-4 text-red-400"></FaTrash>
-                                            </button>
-                                        </div>
-                                    )}
-                                </td>
+                                <ActionButtons
+                                    role={userData?.role}
+                                    status={data.status}
+                                    handleDeleteDonation={handleDeleteDonation}
+                                    dataId={data._id}
+                                />
                             )}
                         </tr>
                     ))}

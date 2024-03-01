@@ -41,6 +41,32 @@ const AllRequests = () => {
         });
     };
 
+    const handleDeleteDonation = (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const willDeleteRes = await privetApi.delete(
+                    `/api/v1/delete-donation-request/${id}`
+                );
+                if (willDeleteRes.data.deletedCount > 0) {
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your file has been deleted.",
+                        icon: "success",
+                    });
+                    refetch();
+                }
+            }
+        });
+    };
+
     return (
         <div>
             <div className="pb-5 mb-5 border-b border-dashed flex items-center justify-between">
@@ -73,6 +99,7 @@ const AllRequests = () => {
                 <Table
                     donationRequests={allRequests}
                     handleUpdateStatus={handleUpdateStatus}
+                    handleDeleteDonation={handleDeleteDonation}
                 ></Table>
             </div>
         </div>

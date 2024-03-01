@@ -13,9 +13,9 @@ const useAdmin = () => {
         enabled: !!userData && !loading,
         queryFn: async () => {
             const isAdminRes = await privetApi.get(
-                `/api/v1/admin/${userData?.email}`
+                `/api/v1/admin-or-volunteer/${userData?.email}`
             );
-            return isAdminRes?.data?.admin;
+            return isAdminRes?.data;
         },
     });
     return { isAdmin, isLoading };
