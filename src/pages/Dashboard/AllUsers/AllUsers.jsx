@@ -1,16 +1,23 @@
 import useAllUsers from "../../../hooks/useAllUsers";
 import { Menu, Transition } from "@headlessui/react";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { FaEllipsisVertical } from "react-icons/fa6";
 import usePrivetApi from "../../../hooks/usePrivetApi";
 import Swal from "sweetalert2";
 import useAdmin from "../../../hooks/useAdmin";
+import Loading from "../../../components/Loading";
 
 const AllUsers = () => {
-    const { allUsers, refetch } = useAllUsers();
+    const [status, setStatus] = useState("default");
+
+    const handleOnChange = (e) => {
+        const statusChange = e.target.value;
+        setStatus(statusChange);
+    };
+
+    const { allUsers, refetch } = useAllUsers(status);
     const privetApi = usePrivetApi();
     const { isAdmin } = useAdmin();
-    console.log(isAdmin);
     const handleStatusChange = (id, status) => {
         Swal.fire({
             title: "Are you sure?",
@@ -38,11 +45,39 @@ const AllUsers = () => {
             }
         });
     };
+
     return (
         <div>
-            <h1 className="pb-5 border-b border-dashed text-3xl text-center">
-                All Users
-            </h1>
+            <div className="pb-5 border-b border-dashed flex items-center justify-between">
+                <h1 className="text-3xl">All Users</h1>
+                <div className="bg-transparent text-txt">
+                    <select
+                        defaultValue="default"
+                        className="select select-border bg-transparent text-txt border-primary rounded focus:outline-none focus:border-primary"
+                        onChange={handleOnChange}
+                    >
+                        <option
+                            value="default"
+                            className="bg-slate-900 text-txt"
+                        >
+                            Default
+                        </option>
+                        <option
+                            value="active"
+                            className="bg-slate-900 text-txt"
+                        >
+                            Active
+                        </option>
+                        <option
+                            value="blocked"
+                            className="bg-slate-900 text-txt"
+                        >
+                            Block
+                        </option>
+                    </select>
+                </div>
+            </div>
+
             <div className="overflow-x-auto">
                 <table className="table">
                     <thead>

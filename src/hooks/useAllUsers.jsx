@@ -1,8 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import usePrivetApi from "./usePrivetApi";
-import Loading from "../components/Loading";
 
-const useAllUsers = () => {
+const useAllUsers = (status) => {
     const privetApi = usePrivetApi();
 
     const {
@@ -11,9 +10,11 @@ const useAllUsers = () => {
         isLoading,
         refetch,
     } = useQuery({
-        queryKey: ["allUsers"],
+        queryKey: ["allUsers", status],
         queryFn: async () => {
-            const allUserRes = await privetApi.get("/api/v1/all-users");
+            const allUserRes = await privetApi.get(
+                `/api/v1/all-users?status=${status}`
+            );
             return allUserRes.data;
         },
     });

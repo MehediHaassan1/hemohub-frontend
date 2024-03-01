@@ -179,7 +179,7 @@ const Table = ({
                             </td>
                             {pathname !== "/dashboard" && (
                                 <td className="space-x-2">
-                                    {data.status === "Canceled" ? (
+                                    {data.status === "Canceled" || data.status === 'Done' ? (
                                         <div className="flex items-center justify-center">
                                             <button
                                                 onClick={() =>
