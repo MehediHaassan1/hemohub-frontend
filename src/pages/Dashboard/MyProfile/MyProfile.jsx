@@ -15,6 +15,7 @@ const MyProfile = () => {
     const { divisionData, districtData, subDistrictData } = useStateData();
     const [edit, setEdit] = useState(false);
     const privetApi = usePrivetApi();
+    const publicApi = usePublicApi();
     const {
         register,
         handleSubmit,

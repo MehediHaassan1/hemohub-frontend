@@ -44,8 +44,8 @@ const NavBar = () => {
                 </NavLink>
             </li>
             <li>
-                <NavLink to="/blog" className="text-lg">
-                    Blog
+                <NavLink to="/blogs" className="text-lg">
+                    Blogs
                 </NavLink>
             </li>
             {!user && (

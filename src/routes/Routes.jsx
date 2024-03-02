@@ -12,6 +12,9 @@ import MyDonation from "../pages/Dashboard/MyDonation/MyDonation";
 import AllUsers from "../pages/Dashboard/AllUsers/AllUsers";
 import AllRequests from "../pages/Dashboard/AllRequests/AllRequests";
 import AdminRoute from "./AdminRoute";
+import Contents from "../pages/Dashboard/Contents/Contents";
+import CreateContent from "../pages/Dashboard/CreateContent/CreateContent";
+import Blogs from "../pages/Blogs/Blogs";
 
 const router = createBrowserRouter([
     {
@@ -29,6 +32,10 @@ const router = createBrowserRouter([
             {
                 path: "register-account",
                 element: <Register></Register>,
+            },
+            {
+                path: "blogs",
+                element: <Blogs></Blogs>,
             },
         ],
     },
@@ -72,6 +79,25 @@ const router = createBrowserRouter([
                     </AdminRoute>
                 ),
             },
+            {
+                path: "content-management",
+                element: (
+                    <AdminRoute>
+                        <Contents></Contents>
+                    </AdminRoute>
+                ),
+                children: [
+                    {
+                        path: "create-content",
+                        element: (
+                            <AdminRoute>
+                                <CreateContent></CreateContent>
+                            </AdminRoute>
+                        ),
+                    },
+                ],
+            },
+            {},
         ],
     },
 ]);
