@@ -3,10 +3,12 @@ import useAllBlogs from "../../../hooks/useAllBlogs";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
 import usePrivetApi from "../../../hooks/usePrivetApi";
+import { useState } from "react";
 
 const Contents = () => {
     const { pathname } = useLocation();
-    const { allBlogs, refetch } = useAllBlogs();
+    const [filterBlogs, setFilterBlogs] = useState("default");
+    const { allBlogs, refetch } = useAllBlogs(filterBlogs);
     const privetApi = usePrivetApi();
 
     const handleDelete = (id) => {
@@ -58,20 +60,53 @@ const Contents = () => {
         });
     };
 
+    const handleStatusChange = (e) => {
+        const filteredData = e.target.value;
+        setFilterBlogs(filteredData);
+    };
+
     return (
         <div>
             {pathname === "/dashboard/content-management" && (
-                <div className="pb-5 mb-5 border-b border-dashed flex items-center justify-between">
-                    <h1 className="md:text-3xl">Content Management</h1>
-                    <Link
-                        to="create-content"
-                        className="bg-slate-800 py-1 px-3 rounded"
-                    >
-                        <button className="md:text-lg tracking-widest text-accent">
-                            Create Content
-                        </button>
-                    </Link>
-                </div>
+                <>
+                    <div className="pb-5 mb-5 border-b border-dashed flex items-center justify-between">
+                        <h1 className="md:text-3xl">Content Management</h1>
+                        <Link
+                            to="create-content"
+                            className="bg-slate-800 py-1 px-3 rounded"
+                        >
+                            <button className="md:text-lg tracking-widest text-accent">
+                                Create Content
+                            </button>
+                        </Link>
+                    </div>
+                    <div className="flex items-center justify-between">
+                        <h1 className="md:text-2xl">All Blogs</h1>
+                        <div>
+                            <select
+                                onChange={handleStatusChange}
+                                className="select select-border border-primary focus:outline-none focus:border-primary bg-transparent"
+                                defaultValue="default"
+                            >
+                                <option
+                                    className="bg-slate-900"
+                                    value="default"
+                                >
+                                    Default
+                                </option>
+                                <option className="bg-slate-900" value="draft">
+                                    Draft
+                                </option>
+                                <option
+                                    className="bg-slate-900"
+                                    value="published"
+                                >
+                                    Published
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </>
             )}
 
             {pathname === "/dashboard/content-management/create-content" && (
@@ -100,8 +135,7 @@ const Contents = () => {
                                         {data.contentTitle}
                                     </td>
                                     <td>
-                                        {data.status === "draft" ||
-                                        data.status === "unpublished" ? (
+                                        {data.status === "draft" ? (
                                             <button
                                                 onClick={() =>
                                                     handleUpdateBlogStatus(
@@ -118,7 +152,7 @@ const Contents = () => {
                                                 onClick={() =>
                                                     handleUpdateBlogStatus(
                                                         data._id,
-                                                        "unpublished"
+                                                        "draft"
                                                     )
                                                 }
                                                 className="bg-slate-900 rounded py-1 px-3"

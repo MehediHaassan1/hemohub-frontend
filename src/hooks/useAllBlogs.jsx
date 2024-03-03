@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import usePublicApi from "./usePublicApi";
 
-const useAllBlogs = () => {
+const useAllBlogs = (status) => {
     const publicApi = usePublicApi();
 
     const { data: allBlogs, refetch } = useQuery({
-        queryKey: ["allBlogs"],
+        queryKey: ["allBlogs", status],
         queryFn: async () => {
-            const allBlogRes = await publicApi.get(`/api/v1/blogs`);
+            const allBlogRes = await publicApi.get(`/api/v1/blogs/${status}`);
             return allBlogRes.data;
         },
     });
