@@ -1,4 +1,3 @@
-import { useState } from "react";
 import useAllBlogs from "../../hooks/useAllBlogs";
 import { Link, useParams } from "react-router-dom";
 
@@ -8,7 +7,7 @@ const Blog = () => {
 
     const blog = allBlogs?.find((blog) => blog._id === params?.id);
     const featuredBlogs = allBlogs?.filter((blog) => blog._id !== params.id);
-    
+
     return (
         <div className="max-w-screen-xl mx-auto">
             <main className="mt-12">

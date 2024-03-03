@@ -1,10 +1,63 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 import useAllBlogs from "../../../hooks/useAllBlogs";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import Swal from "sweetalert2";
+import usePrivetApi from "../../../hooks/usePrivetApi";
 
 const Contents = () => {
     const { pathname } = useLocation();
-    const { allBlogs } = useAllBlogs();
-    console.log(allBlogs);
+    const { allBlogs, refetch } = useAllBlogs();
+    const privetApi = usePrivetApi();
+
+    const handleDelete = (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Your file has been deleted.",
+                    icon: "success",
+                });
+                console.log(id);
+            }
+        });
+    };
+
+    const handleUpdateBlogStatus = async (id, data) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: `Do you want to ${data} the blog`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: `Yes, ${data} it!`,
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const status = { status: data };
+                const statusUpdateRes = await privetApi.patch(
+                    `/api/v1/blogs/${id}`,
+                    status
+                );
+                if (statusUpdateRes.data.modifiedCount > 0) {
+                    Swal.fire({
+                        title: `${data}`,
+                        text: `Blog has been ${data}`,
+                        icon: "success",
+                    });
+                    refetch();
+                }
+            }
+        });
+    };
+
     return (
         <div>
             {pathname === "/dashboard/content-management" && (
@@ -49,19 +102,44 @@ const Contents = () => {
                                     <td>
                                         {data.status === "draft" ||
                                         data.status === "unpublished" ? (
-                                            <button className="bg-slate-900 rounded py-1 px-3">
+                                            <button
+                                                onClick={() =>
+                                                    handleUpdateBlogStatus(
+                                                        data._id,
+                                                        "published"
+                                                    )
+                                                }
+                                                className="bg-slate-900 rounded py-1 px-3"
+                                            >
                                                 Published
                                             </button>
                                         ) : (
-                                            <button className="bg-slate-900 rounded py-1 px-3">
+                                            <button
+                                                onClick={() =>
+                                                    handleUpdateBlogStatus(
+                                                        data._id,
+                                                        "unpublished"
+                                                    )
+                                                }
+                                                className="bg-slate-900 rounded py-1 px-3"
+                                            >
                                                 Unpublished
                                             </button>
                                         )}
                                     </td>
                                     <td className="space-x-2">
-                                        <button>Edit</button>
-
-                                        <button>Delete</button>
+                                        <div className="flex gap-2 items-center justify-center">
+                                            <button>
+                                                <FaEdit className="w-4 h-4"></FaEdit>
+                                            </button>
+                                            <button
+                                                onClick={() =>
+                                                    handleDelete(data._id)
+                                                }
+                                            >
+                                                <FaTrash className="w-4 h-4 text-red-400"></FaTrash>
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}
