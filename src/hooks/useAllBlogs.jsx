@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import usePrivetApi from "./usePrivetApi";
+import usePublicApi from "./usePublicApi";
 
 const useAllBlogs = () => {
-    const privetApi = usePrivetApi();
+    const publicApi = usePublicApi();
 
     const { data: allBlogs, refetch } = useQuery({
         queryKey: ["allBlogs"],
         queryFn: async () => {
-            const allBlogRes = await privetApi.get(`/api/v1/blogs`);
+            const allBlogRes = await publicApi.get(`/api/v1/blogs`);
             return allBlogRes.data;
         },
     });
