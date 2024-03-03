@@ -62,7 +62,7 @@ const Blogs = () => {
                                 </div>
                                 <div>
                                     <Link
-                                        to="/blogs"
+                                        to={`/blogs/${data._id}`}
                                         className="inline-block pb-1 mt-2 text-base font-black text-accent uppercase border-b border-transparent hover:border-accent"
                                     >
                                         Read More

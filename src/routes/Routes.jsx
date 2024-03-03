@@ -15,6 +15,7 @@ import AdminRoute from "./AdminRoute";
 import Contents from "../pages/Dashboard/Contents/Contents";
 import CreateContent from "../pages/Dashboard/CreateContent/CreateContent";
 import Blogs from "../pages/Blogs/Blogs";
+import Blog from "../pages/Blog/Blog";
 
 const router = createBrowserRouter([
     {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
             {
                 path: "blogs",
                 element: <Blogs></Blogs>,
+            },
+            {
+                path: "blogs/:id",
+                element: <Blog></Blog>,
             },
         ],
     },
