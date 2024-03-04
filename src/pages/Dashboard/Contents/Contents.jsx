@@ -20,14 +20,19 @@ const Contents = () => {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes, delete it!",
-        }).then((result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
-                Swal.fire({
-                    title: "Deleted!",
-                    text: "Your file has been deleted.",
-                    icon: "success",
-                });
-                console.log(id);
+                const deletedBlogRes = await privetApi.delete(
+                    `/api/v1/blogs/${id}`
+                );
+                if (deletedBlogRes.data.deletedCount > 0) {
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Post has been deleted.",
+                        icon: "success",
+                    });
+                    refetch();
+                }
             }
         });
     };

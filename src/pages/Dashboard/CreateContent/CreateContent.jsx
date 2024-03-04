@@ -73,6 +73,7 @@ const CreateContent = () => {
                 showConfirmButton: false,
                 timer: 1500,
             });
+            navigate(-1);
         }
     };
 
@@ -153,7 +154,6 @@ const CreateContent = () => {
                     </label>
                 </div>
             </form>
-            {content}
         </div>
     );
 };
