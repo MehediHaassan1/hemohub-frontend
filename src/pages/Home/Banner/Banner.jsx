@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import useUserData from "../../../hooks/useUserData";
 
 const Banner = () => {
+    const { userData } = useUserData();
     return (
         <div
             className="hero min-h-screen"
@@ -21,12 +23,15 @@ const Banner = () => {
                         Together, let's ensure a brighter tomorrow for those in
                         need.
                     </p>
-                    <Link to="/register">
-                        <button className="bg-primary/80 hover:bg-primary duration-300 text-lg font-semibold py-2 px-4 my-3 md:my-0 mx-2 rounded ">
-                            Join as a donor
-                        </button>
-                    </Link>
-                    <Link to="/search-donors">
+                    {!userData && (
+                        <Link to="/register-account">
+                            <button className="bg-primary/80 hover:bg-primary duration-300 text-lg font-semibold py-2 px-4 my-3 md:my-0 mx-2 rounded ">
+                                Join as a donor
+                            </button>
+                        </Link>
+                    )}
+
+                    <Link to="/search-donor">
                         <button className="bg-accent/80 hover:bg-accent duration-300 text-lg font-semibold py-2 px-4 my-3 md:my-0 mx-2 rounded">
                             Search donors
                         </button>

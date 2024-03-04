@@ -16,6 +16,7 @@ import Contents from "../pages/Dashboard/Contents/Contents";
 import CreateContent from "../pages/Dashboard/CreateContent/CreateContent";
 import Blogs from "../pages/Blogs/Blogs";
 import Blog from "../pages/Blog/Blog";
+import SearchDonor from "../pages/SearchDonor/SearchDonor";
 
 const router = createBrowserRouter([
     {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
             {
                 path: "blogs/:id",
                 element: <Blog></Blog>,
+            },
+            {
+                path: "search-donor",
+                element: <SearchDonor></SearchDonor>,
             },
         ],
     },

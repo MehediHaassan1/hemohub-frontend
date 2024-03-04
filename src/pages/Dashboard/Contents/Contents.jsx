@@ -1,6 +1,6 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 import useAllBlogs from "../../../hooks/useAllBlogs";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
 import usePrivetApi from "../../../hooks/usePrivetApi";
 import { useState } from "react";
@@ -12,7 +12,6 @@ const Contents = () => {
     const { allBlogs, refetch } = useAllBlogs(filterBlogs);
     const privetApi = usePrivetApi();
     const { isAdmin } = useAdmin();
-    console.log(isAdmin);
 
     const handleDelete = (id) => {
         Swal.fire({

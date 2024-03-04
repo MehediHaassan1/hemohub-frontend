@@ -5,37 +5,14 @@ const useStateData = () => {
     const publicApi = usePublicApi();
 
     // division query
-    const { data: divisionData } = useQuery({
-        queryKey: ["divisionData"],
+    const { data: stateData } = useQuery({
+        queryKey: ["state-data"],
         queryFn: async () => {
-            const divisionRes = await publicApi.get("/api/v1/divisions");
-            return divisionRes.data;
+            const stateRes = await publicApi.get("/api/v1/state-data");
+            return stateRes.data;
         },
     });
-
-    // district query
-    const { data: districtData} = useQuery({
-        queryKey: ["districtData "],
-        queryFn: async () => {
-            const districtRes = await publicApi.get("/api/v1/districts");
-            return districtRes.data;
-        },
-    });
-
-    // district query
-    const { data: subDistrictData} = useQuery(
-        {
-            queryKey: ["subdistricts "],
-            queryFn: async () => {
-                const subDistrictRes = await publicApi.get(
-                    "/api/v1/subdistricts"
-                );
-                return subDistrictRes.data;
-            },
-        }
-    );
-
-    return { divisionData, districtData, subDistrictData };
+    return { stateData };
 };
 
 export default useStateData;

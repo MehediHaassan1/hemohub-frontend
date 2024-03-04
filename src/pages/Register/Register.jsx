@@ -5,8 +5,50 @@ import { useContext, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import usePublicApi from "../../hooks/usePublicApi";
 import { USER_CONTEXT } from "../../context/AuthProviders";
+import useStateData from "../../hooks/useStateData";
 
 const Register = () => {
+    const { stateData } = useStateData();
+
+    const [district, setDistrict] = useState([]);
+    const [subDistrict, setSubDistrict] = useState([]);
+    const [userSelectedDivision, setUserSelectedDivision] = useState("");
+    const [userSelectedDistrict, setUserSelectedDistrict] = useState("");
+    const [userSelectedSubDistrict, setUserSelectedSubDistrict] = useState("");
+
+    const handleDivisionChange = (e) => {
+        const division = stateData?.division;
+        const district = stateData?.district;
+        const selectedDivision = e.target.value;
+        setUserSelectedDivision(selectedDivision);
+        const divisionDetails = division.find(
+            (data) => data.name === selectedDivision
+        );
+        const districtList = district?.filter(
+            (data) => data.division_id === divisionDetails?.id
+        );
+        setDistrict(districtList);
+    };
+
+    const handleDistrictChange = (e) => {
+        const selectedDistrict = e.target.value;
+        setUserSelectedDistrict(selectedDistrict);
+        const district = stateData?.district;
+        const subDistrict = stateData?.subDistrict;
+        const districtDetails = district.find(
+            (data) => data.name === selectedDistrict
+        );
+        const subDistrictList = subDistrict?.filter(
+            (data) => data.district_id === districtDetails?.id
+        );
+        setSubDistrict(subDistrictList);
+    };
+
+    const handleSubDistrictChange = (e) => {
+        const selectedSubDistrict = e.target.value;
+        setUserSelectedSubDistrict(selectedSubDistrict);
+    };
+
     const navigate = useNavigate();
     const publicApi = usePublicApi();
     const { createUser } = useContext(USER_CONTEXT);
@@ -16,29 +58,18 @@ const Register = () => {
         formState: { errors },
     } = useForm();
     const [showPassword, setShowPassword] = useState(false);
-    const [divisions, setDivisions] = useState([]);
-    const [districts, setDistricts] = useState([]);
-    const [subdistricts, setSubdistricts] = useState([]);
-
-    useEffect(() => {
-        publicApi
-            .get("/api/v1/divisions")
-            .then((res) => setDivisions(res.data));
-
-        publicApi
-            .get("/api/v1/districts")
-            .then((res) => setDistricts(res.data));
-
-        publicApi
-            .get("/api/v1/subdistricts")
-            .then((res) => setSubdistricts(res.data));
-    }, [publicApi]);
 
     const handleShowPassword = () => {
         setShowPassword(!showPassword);
     };
 
     const onSubmit = async (data) => {
+        console.log(
+            data,
+            userSelectedDivision,
+            userSelectedDistrict,
+            userSelectedSubDistrict
+        );
         const password = data.password;
         const c_password = data.c_password;
         if (password !== c_password) {
@@ -57,7 +88,7 @@ const Register = () => {
             });
             return;
         }
-        if (data.division === "Pick one") {
+        if (userSelectedDivision === "") {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
@@ -65,7 +96,7 @@ const Register = () => {
             });
             return;
         }
-        if (data.district === "Pick one") {
+        if (userSelectedDistrict === "") {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
@@ -73,7 +104,7 @@ const Register = () => {
             });
             return;
         }
-        if (data.subdistrict === "Pick one") {
+        if (userSelectedSubDistrict === "") {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
@@ -81,17 +112,17 @@ const Register = () => {
             });
             return;
         }
+
         createUser(data.email, data.password)
             .then(async (userCredential) => {
                 const user = userCredential.user;
-                console.log(user);
                 if (user) {
                     const userInfo = {
                         name: data.fullName,
                         email: data.email,
-                        division: data.division,
-                        district: data.district,
-                        subdistrict: data.subdistrict,
+                        division: userSelectedDivision,
+                        district: userSelectedDistrict,
+                        subdistrict: userSelectedSubDistrict,
                         bloodGroup: data.bloodGroup,
                         uid: user.uid,
                         role: "donor",
@@ -245,27 +276,23 @@ const Register = () => {
                                             Division
                                         </label>
                                         <select
+                                            onChange={handleDivisionChange}
                                             defaultValue="Pick one"
                                             className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow  focus:outline-none focus:shadow-outline"
-                                            {...register("division", {
-                                                required: {
-                                                    value: true,
-                                                    message:
-                                                        "Division is required",
-                                                },
-                                            })}
                                         >
                                             <option value="Pick one" disabled>
                                                 Pick one
                                             </option>
-                                            {divisions.map((data) => (
-                                                <option
-                                                    key={data._id}
-                                                    value={data.name}
-                                                >
-                                                    {data.name}
-                                                </option>
-                                            ))}
+                                            {stateData?.division?.map(
+                                                (data) => (
+                                                    <option
+                                                        key={data._id}
+                                                        value={data.name}
+                                                    >
+                                                        {data.name}
+                                                    </option>
+                                                )
+                                            )}
                                         </select>
                                         <label className="block my-2 text-sm font-bold text-red-500">
                                             {errors.division && (
@@ -283,20 +310,14 @@ const Register = () => {
                                             District
                                         </label>
                                         <select
+                                            onChange={handleDistrictChange}
                                             defaultValue="Pick one"
                                             className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow  focus:outline-none focus:shadow-outline"
-                                            {...register("district", {
-                                                required: {
-                                                    value: true,
-                                                    message:
-                                                        "District is required",
-                                                },
-                                            })}
                                         >
                                             <option value="Pick one" disabled>
                                                 Pick one
                                             </option>
-                                            {districts.map((data) => (
+                                            {district?.map((data) => (
                                                 <option
                                                     key={data._id}
                                                     value={data.name}
@@ -320,20 +341,14 @@ const Register = () => {
                                             Sub District
                                         </label>
                                         <select
+                                            onChange={handleSubDistrictChange}
                                             defaultValue="Pick one"
                                             className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow  focus:outline-none focus:shadow-outline"
-                                            {...register("subdistrict", {
-                                                required: {
-                                                    value: true,
-                                                    message:
-                                                        "Sub District is required",
-                                                },
-                                            })}
                                         >
                                             <option value="Pick one" disabled>
                                                 Pick one
                                             </option>
-                                            {subdistricts.map((data) => (
+                                            {subDistrict?.map((data) => (
                                                 <option
                                                     key={data._id}
                                                     value={data.name}
@@ -343,8 +358,10 @@ const Register = () => {
                                             ))}
                                         </select>
                                         <label className="block my-2 text-sm font-bold text-red-500">
-                                            {errors.upazilla && (
-                                                <p>{errors.upazilla.message}</p>
+                                            {errors.subdistrict && (
+                                                <p>
+                                                    {errors.subdistrict.message}
+                                                </p>
                                             )}
                                         </label>
                                     </div>
