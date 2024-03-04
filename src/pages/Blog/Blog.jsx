@@ -1,8 +1,8 @@
-import useAllBlogs from "../../hooks/useAllBlogs";
 import { Link, useParams } from "react-router-dom";
+import usePublicBlogs from "../../hooks/usePublicBlogs";
 
 const Blog = () => {
-    const { allBlogs } = useAllBlogs();
+    const { allBlogs } = usePublicBlogs();
     const params = useParams();
 
     const blog = allBlogs?.find((blog) => blog._id === params?.id);

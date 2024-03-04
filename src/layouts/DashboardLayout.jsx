@@ -67,13 +67,22 @@ const Dashboard = () => {
                                 </>
                             )}
                             {userData?.role === "volunteer" && (
-                                <NavLink
-                                    className="flex items-center gap-2 border p-2 rounded-md text-txt"
-                                    to="all-blood-donation-request"
-                                >
-                                    <TbGitPullRequest className="w-5 h-5 text-accent"></TbGitPullRequest>
-                                    All Requests
-                                </NavLink>
+                                <>
+                                    <NavLink
+                                        className="flex items-center gap-2 border p-2 rounded-md text-txt"
+                                        to="all-blood-donation-request"
+                                    >
+                                        <TbGitPullRequest className="w-5 h-5 text-accent"></TbGitPullRequest>
+                                        All Requests
+                                    </NavLink>
+                                    <NavLink
+                                        className="flex items-center gap-2 border p-2 rounded-md text-txt"
+                                        to="content-management"
+                                    >
+                                        <RiDraftLine className="w-5 h-5 text-accent"></RiDraftLine>
+                                        Content
+                                    </NavLink>
+                                </>
                             )}
                             {userData?.role === "admin" && (
                                 <>

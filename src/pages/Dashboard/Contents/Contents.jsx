@@ -4,12 +4,15 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
 import usePrivetApi from "../../../hooks/usePrivetApi";
 import { useState } from "react";
+import useAdmin from "../../../hooks/useAdmin";
 
 const Contents = () => {
     const { pathname } = useLocation();
     const [filterBlogs, setFilterBlogs] = useState("default");
     const { allBlogs, refetch } = useAllBlogs(filterBlogs);
     const privetApi = usePrivetApi();
+    const { isAdmin } = useAdmin();
+    console.log(isAdmin);
 
     const handleDelete = (id) => {
         Swal.fire({
@@ -126,7 +129,7 @@ const Contents = () => {
                                 <th></th>
                                 <th>Name</th>
                                 <th>Status</th>
-                                <th>Actions</th>
+                                {isAdmin?.admin && <th>Action</th>}
                             </tr>
                         </thead>
                         <tbody>
@@ -142,6 +145,7 @@ const Contents = () => {
                                     <td>
                                         {data.status === "draft" ? (
                                             <button
+                                                disabled={!isAdmin?.admin}
                                                 onClick={() =>
                                                     handleUpdateBlogStatus(
                                                         data._id,
@@ -150,10 +154,11 @@ const Contents = () => {
                                                 }
                                                 className="bg-slate-900 rounded py-1 px-3"
                                             >
-                                                Published
+                                                Unpublished
                                             </button>
                                         ) : (
                                             <button
+                                                disabled={!isAdmin?.admin}
                                                 onClick={() =>
                                                     handleUpdateBlogStatus(
                                                         data._id,
@@ -162,24 +167,23 @@ const Contents = () => {
                                                 }
                                                 className="bg-slate-900 rounded py-1 px-3"
                                             >
-                                                Unpublished
+                                                Published
                                             </button>
                                         )}
                                     </td>
-                                    <td className="space-x-2">
-                                        <div className="flex gap-2 items-center justify-center">
-                                            <button>
-                                                <FaEdit className="w-4 h-4"></FaEdit>
-                                            </button>
-                                            <button
-                                                onClick={() =>
-                                                    handleDelete(data._id)
-                                                }
-                                            >
-                                                <FaTrash className="w-4 h-4 text-red-400"></FaTrash>
-                                            </button>
-                                        </div>
-                                    </td>
+                                    {isAdmin?.admin && (
+                                        <td className="">
+                                            <div className="flex items-center justify-center">
+                                                <button
+                                                    onClick={() =>
+                                                        handleDelete(data._id)
+                                                    }
+                                                >
+                                                    <FaTrash className="w-4 h-4 text-red-400"></FaTrash>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    )}
                                 </tr>
                             ))}
                         </tbody>

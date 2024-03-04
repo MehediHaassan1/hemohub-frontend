@@ -1,19 +1,8 @@
-import { useEffect, useState } from "react";
-import useAllBlogs from "../../hooks/useAllBlogs";
 import { Link } from "react-router-dom";
+import usePublicBlogs from "../../hooks/usePublicBlogs";
 
 const Blogs = () => {
-    const { allBlogs } = useAllBlogs();
-    const [publishedBlog, setPublishedBlog] = useState([]);
-
-    useEffect(() => {
-        if (allBlogs?.length > 0) {
-            const filteredBlogs = allBlogs?.filter(
-                (blog) => blog.status === "published"
-            );
-            setPublishedBlog(filteredBlogs);
-        }
-    }, [allBlogs]);
+    const { allBlogs } = usePublicBlogs();
 
     const triangleStyle = {
         width: 0,
@@ -25,7 +14,7 @@ const Blogs = () => {
     return (
         <div className="max-w-screen-xl mx-auto">
             <div className="flex flex-wrap lg:-mx-4">
-                {publishedBlog?.map((data) => (
+                {allBlogs?.map((data) => (
                     <div
                         key={data._id}
                         className="w-full max-w-full my-8 sm:w-1/2 px-4 lg:w-1/3 flex flex-col"
