@@ -14,10 +14,10 @@ const useUserData = () => {
         isLoading,
         refetch,
     } = useQuery({
-        queryKey: ["userData", user?.uid],
+        queryKey: ["userData", user?.email],
         enabled: !loading,
         queryFn: async () => {
-            const userRes = await privetApi.get(`/api/v1/user/${user?.uid}`);
+            const userRes = await privetApi.get(`/api/v1/user/${user?.email}`);
             return userRes.data;
         },
     });

@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import GoogleLogin from "../shared/GoogleLogin/GoogleLogin";
 import { useForm } from "react-hook-form";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import Swal from "sweetalert2";
 import usePublicApi from "../../hooks/usePublicApi";
 import { USER_CONTEXT } from "../../context/AuthProviders";

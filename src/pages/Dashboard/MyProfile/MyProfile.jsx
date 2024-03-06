@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import usePublicApi from "../../../hooks/usePublicApi";
 import Swal from "sweetalert2";
 import usePrivetApi from "../../../hooks/usePrivetApi";
+import { useNavigate } from "react-router-dom";
 
 const imageHostingKey = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const imageHostingURL = `https://api.imgbb.com/1/upload?key=${imageHostingKey}`;
@@ -13,7 +14,7 @@ const imageHostingURL = `https://api.imgbb.com/1/upload?key=${imageHostingKey}`;
 const MyProfile = () => {
     const { userData, refetch } = useUserData();
     const { stateData } = useStateData();
-
+    const navigate = useNavigate();
     const [edit, setEdit] = useState(false);
     const privetApi = usePrivetApi();
     const publicApi = usePublicApi();
@@ -24,7 +25,58 @@ const MyProfile = () => {
         reset,
     } = useForm();
 
+    const [district, setDistrict] = useState([]);
+    const [subDistrict, setSubDistrict] = useState([]);
+    const [userSelectedDivision, setUserSelectedDivision] = useState("");
+    const [userSelectedDistrict, setUserSelectedDistrict] = useState("");
+    const [userSelectedSubDistrict, setUserSelectedSubDistrict] = useState("");
+
+    const handleDivisionChange = (e) => {
+        const division = stateData?.division;
+        const district = stateData?.district;
+        const selectedDivision = e.target.value;
+        setUserSelectedDivision(selectedDivision);
+        const divisionDetails = division.find(
+            (data) => data.name === selectedDivision
+        );
+        const districtList = district?.filter(
+            (data) => data.division_id === divisionDetails?.id
+        );
+        setDistrict(districtList);
+    };
+
+    const handleDistrictChange = (e) => {
+        const selectedDistrict = e.target.value;
+        setUserSelectedDistrict(selectedDistrict);
+        const district = stateData?.district;
+        const subDistrict = stateData?.subDistrict;
+        const districtDetails = district.find(
+            (data) => data.name === selectedDistrict
+        );
+        const subDistrictList = subDistrict?.filter(
+            (data) => data.district_id === districtDetails?.id
+        );
+        setSubDistrict(subDistrictList);
+    };
+
+    const handleSubDistrictChange = (e) => {
+        const selectedSubDistrict = e.target.value;
+        setUserSelectedSubDistrict(selectedSubDistrict);
+    };
+
     const onSubmit = async (data) => {
+        if (
+            userSelectedDivision === "" ||
+            userSelectedDistrict === "" ||
+            userSelectedSubDistrict === ""
+        ) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Please modified data in a proper way",
+            });
+            return;
+        }
         let image;
         if (data.image) {
             const imageData = { image: data.image[0] };
@@ -45,9 +97,9 @@ const MyProfile = () => {
         const updatedInfo = {
             name: data.name,
             email: data.email,
-            division: data.division,
-            district: data.district,
-            subdistrict: data.subdistrict,
+            division: userSelectedDivision,
+            district: userSelectedDistrict,
+            subdistrict: userSelectedSubDistrict,
             bloodGroup: data.bloodGroup,
             image,
         };
@@ -63,8 +115,7 @@ const MyProfile = () => {
                 showConfirmButton: false,
                 timer: 2000,
             });
-            refetch();
-            setEdit(false);
+            navigate('/dashboard')
         }
     };
 
@@ -155,36 +206,72 @@ const MyProfile = () => {
                                         },
                                     })}
                                 >
-                                    <option className="bg-slate-800" value="A+">
-                                        A+
-                                    </option>
-                                    <option className="bg-slate-800" value="A-">
-                                        A-
-                                    </option>
-                                    <option className="bg-slate-800" value="B+">
-                                        B+
-                                    </option>
-                                    <option className="bg-slate-800" value="B-">
-                                        B-
-                                    </option>
-                                    <option className="bg-slate-800" value="O+">
-                                        O+
-                                    </option>
-                                    <option className="bg-slate-800" value="O-">
-                                        O-
-                                    </option>
-                                    <option
-                                        className="bg-slate-800"
-                                        value="AB+"
-                                    >
-                                        AB+
-                                    </option>
-                                    <option
-                                        className="bg-slate-800"
-                                        value="AB-"
-                                    >
-                                        AB-
-                                    </option>
+                                    {edit ? (
+                                        <>
+                                            <option
+                                                className="bg-slate-800"
+                                                value="Pick one"
+                                                disabled
+                                            >
+                                                Pick one
+                                            </option>
+                                            <option
+                                                className="bg-slate-800"
+                                                value="A+"
+                                            >
+                                                A+
+                                            </option>
+                                            <option
+                                                className="bg-slate-800"
+                                                value="A-"
+                                            >
+                                                A-
+                                            </option>
+                                            <option
+                                                className="bg-slate-800"
+                                                value="B+"
+                                            >
+                                                B+
+                                            </option>
+                                            <option
+                                                className="bg-slate-800"
+                                                value="B-"
+                                            >
+                                                B-
+                                            </option>
+                                            <option
+                                                className="bg-slate-800"
+                                                value="O+"
+                                            >
+                                                O+
+                                            </option>
+                                            <option
+                                                className="bg-slate-800"
+                                                value="O-"
+                                            >
+                                                O-
+                                            </option>
+                                            <option
+                                                className="bg-slate-800"
+                                                value="AB+"
+                                            >
+                                                AB+
+                                            </option>
+                                            <option
+                                                className="bg-slate-800"
+                                                value="AB-"
+                                            >
+                                                AB-
+                                            </option>
+                                        </>
+                                    ) : (
+                                        <option
+                                            value={userData?.bloodGroup}
+                                            className="bg-slate-800"
+                                        >
+                                            {userData?.bloodGroup}
+                                        </option>
+                                    )}
                                 </select>
                             </label>
                         </div>
@@ -203,22 +290,37 @@ const MyProfile = () => {
                                         }
                                         `}
                                     disabled={edit ? false : true}
-                                    {...register("division", {
-                                        required: {
-                                            value: true,
-                                            message: "division is required",
-                                        },
-                                    })}
+                                    onChange={handleDivisionChange}
                                 >
-                                    {stateData?.division?.map((data) => (
+                                    {edit ? (
+                                        <>
+                                            <option
+                                                value="Pick one"
+                                                className="bg-slate-800"
+                                                disabled
+                                            >
+                                                Pick one
+                                            </option>
+                                            {stateData?.division?.map(
+                                                (data) => (
+                                                    <option
+                                                        key={data?._id}
+                                                        className="bg-slate-800"
+                                                        value={data?.name}
+                                                    >
+                                                        {data?.name}
+                                                    </option>
+                                                )
+                                            )}
+                                        </>
+                                    ) : (
                                         <option
-                                            key={data?._id}
+                                            value={userData?.division}
                                             className="bg-slate-800"
-                                            value={data?.name}
                                         >
-                                            {data?.name}
+                                            {userData?.division}
                                         </option>
-                                    ))}
+                                    )}
                                 </select>
                             </label>
                         </div>
@@ -237,24 +339,37 @@ const MyProfile = () => {
                                             edit ? "bg-slate-900 text-txt" : ""
                                         }
                                         `}
-                                    defaultValue={userData?.subdistrict}
+                                    defaultValue={userData?.district}
                                     disabled={edit ? false : true}
-                                    {...register("district", {
-                                        required: {
-                                            value: true,
-                                            message: "District is required",
-                                        },
-                                    })}
+                                    onChange={handleDistrictChange}
                                 >
-                                    {stateData?.district?.map((data) => (
+                                    {edit ? (
+                                        <>
+                                            <option
+                                                value="Pick one"
+                                                className="bg-slate-800"
+                                                disabled
+                                            >
+                                                Pick one
+                                            </option>
+                                            {district?.map((data) => (
+                                                <option
+                                                    key={data?._id}
+                                                    className="bg-slate-800"
+                                                    value={data?.name}
+                                                >
+                                                    {data?.name}
+                                                </option>
+                                            ))}
+                                        </>
+                                    ) : (
                                         <option
-                                            key={data?._id}
+                                            value={userData?.district}
                                             className="bg-slate-800"
-                                            value={data?.name}
                                         >
-                                            {data?.name}
+                                            {userData?.district}
                                         </option>
-                                    ))}
+                                    )}
                                 </select>
                             </label>
                         </div>
@@ -273,22 +388,35 @@ const MyProfile = () => {
                                         }
                                         `}
                                     disabled={edit ? false : true}
-                                    {...register("subdistrict", {
-                                        required: {
-                                            value: true,
-                                            message: "Subdistrict is required",
-                                        },
-                                    })}
+                                    onChange={handleSubDistrictChange}
                                 >
-                                    {stateData?.subDistrict?.map((data) => (
+                                    {edit ? (
+                                        <>
+                                            <option
+                                                value="Pick one"
+                                                className="bg-slate-800"
+                                                disabled
+                                            >
+                                                Pick one
+                                            </option>
+                                            {subDistrict?.map((data) => (
+                                                <option
+                                                    key={data._id}
+                                                    className="bg-slate-800"
+                                                    value={data.name}
+                                                >
+                                                    {data.name}
+                                                </option>
+                                            ))}
+                                        </>
+                                    ) : (
                                         <option
-                                            key={data._id}
                                             className="bg-slate-800"
-                                            value={data.name}
+                                            value={userData?.subdistrict}
                                         >
-                                            {data.name}
+                                            {userData?.subdistrict}
                                         </option>
-                                    ))}
+                                    )}
                                 </select>
                             </label>
                         </div>

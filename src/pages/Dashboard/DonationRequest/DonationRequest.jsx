@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
-import useStateData from "../../../hooks/useStateData";
 import Swal from "sweetalert2";
 import usePrivetApi from "../../../hooks/usePrivetApi";
 
@@ -20,7 +19,6 @@ const DonationRequest = () => {
         reset,
     } = useForm();
     const [startDate, setStartDate] = useState(new Date());
-    const { districtData, subDistrictData } = useStateData();
     const onSubmit = async (data) => {
         if (userData?.status === "blocked") {
             Swal.fire({
@@ -232,33 +230,16 @@ const DonationRequest = () => {
                                         District
                                     </span>
                                 </div>
-                                <select
-                                    className={`input w-full text-txt focus:border-primary focus:outline-none 
-                                    text-lg border border-primary disabled:bg-transparent disabled:border-primary  disabled:text-txt ${
-                                        edit ? "bg-slate-900 text-txt" : ""
-                                    }
-                                    `}
-                                    disabled={edit ? false : true}
-                                    defaultValue="Pick one"
+                                <input
+                                    type="text"
+                                    placeholder="Type here"
+                                    className={`input w-full text-txt focus:border-primary
+                                     focus:outline-none text-lg border border-primary 
+                                     bg-transparent cursor-not-allowed`}
+                                    defaultValue={userData?.district}
+                                    readOnly
                                     {...register("district")}
-                                >
-                                    <option
-                                        className="bg-slate-800"
-                                        value="Pick one"
-                                        disabled
-                                    >
-                                        Pick One
-                                    </option>
-                                    {districtData?.map((data) => (
-                                        <option
-                                            key={data._id}
-                                            className="bg-slate-800"
-                                            value={data.name}
-                                        >
-                                            {data.name}
-                                        </option>
-                                    ))}
-                                </select>
+                                />
                             </label>
                             <div className="label">
                                 <span className="label-text-alt text-red-400 text-base"></span>
@@ -271,33 +252,16 @@ const DonationRequest = () => {
                                         Sub District
                                     </span>
                                 </div>
-                                <select
-                                    className={`input w-full text-txt focus:border-primary focus:outline-none 
-                                   text-lg border border-primary disabled:bg-transparent disabled:border-primary  disabled:text-txt ${
-                                       edit ? "bg-slate-900 text-txt" : ""
-                                   }
-                                   `}
-                                    disabled={edit ? false : true}
-                                    defaultValue="Pick one"
-                                    {...register("subDistrict")}
-                                >
-                                    <option
-                                        className="bg-slate-800"
-                                        value="Pick one"
-                                        disabled
-                                    >
-                                        Pick One
-                                    </option>
-                                    {subDistrictData?.map((data) => (
-                                        <option
-                                            key={data._id}
-                                            className="bg-slate-800"
-                                            value={data.name}
-                                        >
-                                            {data.name}
-                                        </option>
-                                    ))}
-                                </select>
+                                <input
+                                    type="text"
+                                    placeholder="Type here"
+                                    className={`input w-full text-txt focus:border-primary
+                                     focus:outline-none text-lg border border-primary 
+                                     bg-transparent cursor-not-allowed`}
+                                    defaultValue={userData?.subdistrict}
+                                    readOnly
+                                    {...register("subdistrict")}
+                                />
                                 <div className="label">
                                     <span className="label-text-alt text-red-400 text-base"></span>
                                 </div>
