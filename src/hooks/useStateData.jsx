@@ -4,7 +4,6 @@ import usePublicApi from "./usePublicApi";
 const useStateData = () => {
     const publicApi = usePublicApi();
 
-    // division query
     const { data: stateData } = useQuery({
         queryKey: ["state-data"],
         queryFn: async () => {

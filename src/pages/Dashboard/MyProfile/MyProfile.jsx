@@ -12,7 +12,8 @@ const imageHostingURL = `https://api.imgbb.com/1/upload?key=${imageHostingKey}`;
 
 const MyProfile = () => {
     const { userData, refetch } = useUserData();
-    const { divisionData, districtData, subDistrictData } = useStateData();
+    const { stateData } = useStateData();
+
     const [edit, setEdit] = useState(false);
     const privetApi = usePrivetApi();
     const publicApi = usePublicApi();
@@ -209,7 +210,7 @@ const MyProfile = () => {
                                         },
                                     })}
                                 >
-                                    {divisionData?.map((data) => (
+                                    {stateData?.division?.map((data) => (
                                         <option
                                             key={data?._id}
                                             className="bg-slate-800"
@@ -236,7 +237,7 @@ const MyProfile = () => {
                                             edit ? "bg-slate-900 text-txt" : ""
                                         }
                                         `}
-                                    defaultValue={userData?.district}
+                                    defaultValue={userData?.subdistrict}
                                     disabled={edit ? false : true}
                                     {...register("district", {
                                         required: {
@@ -245,7 +246,7 @@ const MyProfile = () => {
                                         },
                                     })}
                                 >
-                                    {districtData?.map((data) => (
+                                    {stateData?.district?.map((data) => (
                                         <option
                                             key={data?._id}
                                             className="bg-slate-800"
@@ -279,7 +280,7 @@ const MyProfile = () => {
                                         },
                                     })}
                                 >
-                                    {subDistrictData?.map((data) => (
+                                    {stateData?.subDistrict?.map((data) => (
                                         <option
                                             key={data._id}
                                             className="bg-slate-800"
