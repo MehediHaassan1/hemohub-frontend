@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { USER_CONTEXT } from "../context/AuthProviders";
 import { useQuery } from "@tanstack/react-query";
 import usePrivetApi from "./usePrivetApi";
-import Loading from "../components/Loading";
 
 const useUserData = () => {
     const { user, loading } = useContext(USER_CONTEXT);
