@@ -46,7 +46,7 @@ const Table = ({
                         <tr key={data._id}>
                             <th>{index + 1}</th>
                             <td>{data.recipientName}</td>
-                            <td>{data.subDistrict + ", " + data.district}</td>
+                            <td>{data.subdistrict + ", " + data.district}</td>
                             <td>{data.donationDate}</td>
                             <td>{data.donationTime}</td>
                             {userData?.role === "admin" && (

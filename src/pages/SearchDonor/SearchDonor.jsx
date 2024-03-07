@@ -11,6 +11,8 @@ const SearchDonor = () => {
     const [userSelectedDistrict, setUserSelectedDistrict] = useState("");
     const [userSelectedSubDistrict, setUserSelectedSubDistrict] = useState("");
 
+    const [allDonors, setAllDonors] = useState([]);
+
     const handleDistrictChange = (e) => {
         const selectedDistrict = e.target.value;
         setUserSelectedDistrict(selectedDistrict);
@@ -57,11 +59,11 @@ const SearchDonor = () => {
             });
             return;
         }
-        console.log(bloodGroup, district, subdistrict);
+
         const searchData = await publicApi.get(
             `/api/v1/search-donors?bloodGroup=${bloodGroup}&district=${district}&subdistrict=${subdistrict}`
         );
-        console.log(searchData.data);
+        setAllDonors(searchData.data);
     };
 
     return (
@@ -129,6 +131,67 @@ const SearchDonor = () => {
                         className="w-full max-w-xs bg-slate-800 py-3 rounded cursor-pointer"
                     />
                 </form>
+            </div>
+            <div>
+                <div className="overflow-x-auto">
+                    <table className="table">
+                        {/* head */}
+                        <thead>
+                            <tr className="text-txt">
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Blood Group</th>
+                                <th>Address</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {allDonors?.map((data, index) => (
+                                <tr key={data._id}>
+                                    <th>{index + 1}</th>
+                                    <td>
+                                        <div className="flex items-center gap-3">
+                                            {data.image ? (
+                                                <div className="avatar">
+                                                    <div className="mask rounded w-10 h-10">
+                                                        <img
+                                                            src=""
+                                                            alt="Avatar Tailwind CSS Component"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <div className="avatar placeholder">
+                                                    <div className="bg-neutral text-neutral-content rounded-full w-10">
+                                                        <span className="uppercase">
+                                                            {data.name.slice(
+                                                                0,
+                                                                2
+                                                            )}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            <div>
+                                                <div className="font-bold">
+                                                    {data.name}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{data.email}</td>
+                                    <td>{data.bloodGroup}</td>
+                                    <td>
+                                        {data.subdistrict +
+                                            ", " +
+                                            data.district}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     );
