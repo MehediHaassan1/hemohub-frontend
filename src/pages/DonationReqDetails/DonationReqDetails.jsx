@@ -5,6 +5,7 @@ import Table from "../../components/Table";
 import useUserData from "../../hooks/useUserData";
 import usePrivetApi from "../../hooks/usePrivetApi";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet-async";
 
 const DonationReqDetails = () => {
     const { id } = useParams();
@@ -58,6 +59,9 @@ const DonationReqDetails = () => {
 
     return (
         <div className="max-w-screen-xl mx-auto">
+            <Helmet>
+                <title>Details  | HemoHub</title>
+            </Helmet>
             <div>
                 <h1 className="text-xl">
                     <span className="font-bold">Blood Group :</span>{" "}

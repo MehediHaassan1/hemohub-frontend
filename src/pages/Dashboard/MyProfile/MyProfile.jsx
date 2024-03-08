@@ -7,6 +7,7 @@ import usePublicApi from "../../../hooks/usePublicApi";
 import Swal from "sweetalert2";
 import usePrivetApi from "../../../hooks/usePrivetApi";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 const imageHostingKey = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const imageHostingURL = `https://api.imgbb.com/1/upload?key=${imageHostingKey}`;
@@ -115,12 +116,15 @@ const MyProfile = () => {
                 showConfirmButton: false,
                 timer: 2000,
             });
-            navigate('/dashboard')
+            navigate("/dashboard");
         }
     };
 
     return (
         <div>
+            <Helmet>
+                <title>My Profile | HemoHub</title>
+            </Helmet>
             <DashboardTitle
                 title={"My profile"}
                 edit={edit}

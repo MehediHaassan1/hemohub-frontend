@@ -1,11 +1,16 @@
 import { Link } from "react-router-dom";
 import usePublicReqs from "../../hooks/usePublicReqs";
+import { Helmet } from "react-helmet-async";
+import NoData from "../shared/NoData/NoData";
 
 const AllDonationRequest = () => {
     const { allPublicReqs } = usePublicReqs();
 
     return (
         <div className="max-w-screen-xl mx-auto">
+            <Helmet>
+                <title>Donation Requests | HemoHub</title>
+            </Helmet>
             <div>
                 <h1 className="md:text-3xl text-center">Donation Requests</h1>
             </div>
@@ -49,7 +54,11 @@ const AllDonationRequest = () => {
                         </table>
                     </div>
                 ) : (
-                    <div className="text-center">Nothing here</div>
+                    <NoData>
+                        <p className="text-gray-600">
+                            It seems like there's no data to display.
+                        </p>
+                    </NoData>
                 )}
             </div>
         </div>

@@ -3,6 +3,7 @@ import Table from "../../../components/Table";
 import useAllRequest from "../../../hooks/useAllRequest";
 import usePrivetApi from "../../../hooks/usePrivetApi";
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 
 const AllRequests = () => {
     const [status, setStatus] = useState("default");
@@ -69,6 +70,9 @@ const AllRequests = () => {
 
     return (
         <div>
+            <Helmet>
+                <title>All Requests | HemoHub</title>
+            </Helmet>
             <div className="pb-5 mb-5 border-b border-dashed flex items-center justify-between">
                 <h1 className="text-3xl">All Donation Request</h1>
                 <div>

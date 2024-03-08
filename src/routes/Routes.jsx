@@ -19,6 +19,7 @@ import Blog from "../pages/Blog/Blog";
 import SearchDonor from "../pages/SearchDonor/SearchDonor";
 import AllDonationRequest from "../pages/AllDonationRequest/AllDonationRequest";
 import DonationReqDetails from "../pages/DonationReqDetails/DonationReqDetails";
+import NotFound from "../pages/shared/NotFound/NotFound";
 
 const router = createBrowserRouter([
     {
@@ -119,6 +120,10 @@ const router = createBrowserRouter([
             },
             {},
         ],
+    },
+    {
+        path: "*",
+        element: <NotFound></NotFound>,
     },
 ]);
 

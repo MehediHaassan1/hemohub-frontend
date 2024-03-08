@@ -4,6 +4,7 @@ import Table from "../../../components/Table";
 import Swal from "sweetalert2";
 import usePrivetApi from "../../../hooks/usePrivetApi";
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 
 const MyDonation = () => {
     const [status, setStatus] = useState("default");
@@ -69,6 +70,9 @@ const MyDonation = () => {
 
     return (
         <div>
+            <Helmet>
+                <title>My Donations | HemoHub</title>
+            </Helmet>
             <div className="pb-5 mb-5 border-b border-dashed flex items-center justify-between">
                 <h1 className="text-3xl">My Donation Request</h1>
                 <div>

@@ -6,6 +6,7 @@ import usePrivetApi from "../../../hooks/usePrivetApi";
 import Swal from "sweetalert2";
 import useAdmin from "../../../hooks/useAdmin";
 import Loading from "../../../components/Loading";
+import { Helmet } from "react-helmet-async";
 
 const AllUsers = () => {
     const [status, setStatus] = useState("default");
@@ -48,6 +49,9 @@ const AllUsers = () => {
 
     return (
         <div>
+            <Helmet>
+                <title>All Users| HemoHub</title>
+            </Helmet>
             <div className="pb-5 border-b border-dashed flex items-center justify-between">
                 <h1 className="text-3xl">All Users</h1>
                 <div className="bg-transparent text-txt">

@@ -2,6 +2,8 @@ import { useState } from "react";
 import useStateData from "../../hooks/useStateData";
 import Swal from "sweetalert2";
 import usePublicApi from "../../hooks/usePublicApi";
+import { Helmet } from "react-helmet-async";
+import NoData from "../shared/NoData/NoData";
 
 const SearchDonor = () => {
     const { stateData } = useStateData();
@@ -68,6 +70,9 @@ const SearchDonor = () => {
 
     return (
         <div className="max-w-screen-xl mx-auto">
+            <Helmet>
+                <title>Search Donor | HemoHub</title>
+            </Helmet>
             <h1 className="text-2xl md:text-4xl text-center">
                 Search Your Donor
             </h1>
@@ -133,65 +138,74 @@ const SearchDonor = () => {
                 </form>
             </div>
             <div>
-                <div className="overflow-x-auto">
-                    <table className="table">
-                        {/* head */}
-                        <thead>
-                            <tr className="text-txt">
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Blood Group</th>
-                                <th>Address</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {allDonors?.map((data, index) => (
-                                <tr key={data._id}>
-                                    <th>{index + 1}</th>
-                                    <td>
-                                        <div className="flex items-center gap-3">
-                                            {data.image ? (
-                                                <div className="avatar">
-                                                    <div className="mask rounded w-10 h-10">
-                                                        <img
-                                                            src=""
-                                                            alt="Avatar Tailwind CSS Component"
-                                                        />
+                {allDonors?.length > 0 ? (
+                    <div className="overflow-x-auto">
+                        <table className="table">
+                            {/* head */}
+                            <thead>
+                                <tr className="text-txt">
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Blood Group</th>
+                                    <th>Address</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {allDonors?.map((data, index) => (
+                                    <tr key={data._id}>
+                                        <th>{index + 1}</th>
+                                        <td>
+                                            <div className="flex items-center gap-3">
+                                                {data.image ? (
+                                                    <div className="avatar">
+                                                        <div className="mask rounded w-10 h-10">
+                                                            <img
+                                                                src=""
+                                                                alt="Avatar Tailwind CSS Component"
+                                                            />
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            ) : (
-                                                <div className="avatar placeholder">
-                                                    <div className="bg-neutral text-neutral-content rounded-full w-10">
-                                                        <span className="uppercase">
-                                                            {data.name.slice(
-                                                                0,
-                                                                2
-                                                            )}
-                                                        </span>
+                                                ) : (
+                                                    <div className="avatar placeholder">
+                                                        <div className="bg-neutral text-neutral-content rounded-full w-10">
+                                                            <span className="uppercase">
+                                                                {data.name.slice(
+                                                                    0,
+                                                                    2
+                                                                )}
+                                                            </span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            )}
+                                                )}
 
-                                            <div>
-                                                <div className="font-bold">
-                                                    {data.name}
+                                                <div>
+                                                    <div className="font-bold">
+                                                        {data.name}
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td>{data.email}</td>
-                                    <td>{data.bloodGroup}</td>
-                                    <td>
-                                        {data.subdistrict +
-                                            ", " +
-                                            data.district}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                                        </td>
+                                        <td>{data.email}</td>
+                                        <td>{data.bloodGroup}</td>
+                                        <td>
+                                            {data.subdistrict +
+                                                ", " +
+                                                data.district}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                ) : (
+                    <NoData>
+                        <p className="text-gray-600">
+                            It seems like there's no data to display. Try
+                            changing your search criteria.
+                        </p>
+                    </NoData>
+                )}
             </div>
         </div>
     );

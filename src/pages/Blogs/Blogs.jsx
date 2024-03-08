@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import usePublicBlogs from "../../hooks/usePublicBlogs";
+import { Helmet } from "react-helmet-async";
 
 const Blogs = () => {
     const { allBlogs } = usePublicBlogs();
@@ -13,6 +14,9 @@ const Blogs = () => {
     };
     return (
         <div className="max-w-screen-xl mx-auto">
+            <Helmet>
+                <title>Blogs | HemoHub</title>
+            </Helmet>
             <div className="flex flex-wrap lg:-mx-4">
                 {allBlogs?.map((data) => (
                     <div

@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import usePrivetApi from "../../../hooks/usePrivetApi";
 import { useState } from "react";
 import useAdmin from "../../../hooks/useAdmin";
+import { Helmet } from "react-helmet-async";
 
 const Contents = () => {
     const { pathname } = useLocation();
@@ -74,6 +75,9 @@ const Contents = () => {
 
     return (
         <div>
+            <Helmet>
+                <title>Content | HemoHub</title>
+            </Helmet>
             {pathname === "/dashboard/content-management" && (
                 <>
                     <div className="pb-5 mb-5 border-b border-dashed flex items-center justify-between">

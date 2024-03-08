@@ -7,10 +7,14 @@ import Faq from "../Faq/Faq";
 import Gallery from "../Gallery/Gallery";
 import Process from "../Process/Process";
 import Volunteers from "../Volunteers/Volunteers";
+import { Helmet } from "react-helmet-async";
 
 const Home = () => {
     return (
         <div>
+            <Helmet>
+                <title>Home | HemoHub</title>
+            </Helmet>
             <Banner></Banner>
             <Data></Data>
             <Process></Process>

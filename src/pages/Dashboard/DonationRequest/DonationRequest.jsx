@@ -7,6 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import Swal from "sweetalert2";
 import usePrivetApi from "../../../hooks/usePrivetApi";
+import { Helmet } from "react-helmet-async";
 
 const DonationRequest = () => {
     const { userData } = useUserData();
@@ -75,6 +76,9 @@ const DonationRequest = () => {
 
     return (
         <div>
+            <Helmet>
+                <title>Create Request | HemoHub</title>
+            </Helmet>
             <DashboardTitle
                 title={"Donation Request"}
                 edit={edit}

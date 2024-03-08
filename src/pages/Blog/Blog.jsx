@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import usePublicBlogs from "../../hooks/usePublicBlogs";
+import { Helmet } from "react-helmet-async";
 
 const Blog = () => {
     const { allBlogs } = usePublicBlogs();
@@ -10,6 +11,9 @@ const Blog = () => {
 
     return (
         <div className="max-w-screen-xl mx-auto">
+            <Helmet>
+                <title>Details | HemoHub</title>
+            </Helmet>
             <main className="mt-12">
                 <div className="flex gap-2 lg:gap-8 mb-16 relative">
                     <div className="mb-4 lg:mb-0  p-4 lg:p-0 w-full md:w-8/12 relative rounded block">

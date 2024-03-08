@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import usePrivetApi from "../../../hooks/usePrivetApi";
 import usePublicApi from "../../../hooks/usePublicApi";
 import moment from "moment";
+import { Helmet } from "react-helmet-async";
 
 const imageHostingKey = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const imageHostingURL = `https://api.imgbb.com/1/upload?key=${imageHostingKey}`;
@@ -79,6 +80,9 @@ const CreateContent = () => {
 
     return (
         <div>
+            <Helmet>
+                <title>Create Content | HemoHub</title>
+            </Helmet>
             <div className="pb-5 mb-5 border-b border-dashed flex items-center justify-between">
                 <h1 className="md:text-3xl">Create Content</h1>
                 <button
