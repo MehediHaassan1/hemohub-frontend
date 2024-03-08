@@ -40,13 +40,5 @@ To run the HemoHub application locally, follow these steps:
 1. Clone this repository to your local machine.
 2. Navigate to the project directory.
 3. Install dependencies using `npm install`.
-4. Start the development server with `npm start`.
-5. Access the application through your web browser at `http://localhost:3000`.
-
-## Contributing
-
-We welcome contributions from the community to enhance HemoHub. Feel free to submit bug reports, feature requests, or pull requests.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
+4. Start the development server with `npm run dev`.
+5. Access the application through your web browser at `http://localhost:5173`.
