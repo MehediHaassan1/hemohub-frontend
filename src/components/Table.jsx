@@ -19,7 +19,11 @@ const Table = ({
     const handleDonorInfo = (data) => {
         Swal.fire({
             title: "Donor Info!",
-            html: `<p>Name: ${data.requesterName}</p><p>Email: ${data.requesterEmail}</p>`,
+            html: `${
+                data.donorName && data.donorEmail
+                    ? `<p>Name: ${data.donorName}</p><p>Email: ${data.donorEmail}</p>`
+                    : `<p>Name: Not Found</p><p>Email: Not Found</p>`
+            }`,
             icon: "info",
         });
     };
