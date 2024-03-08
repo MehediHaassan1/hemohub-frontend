@@ -7,6 +7,7 @@ import {
     signInWithEmailAndPassword,
     GoogleAuthProvider,
     signInWithPopup,
+    sendPasswordResetEmail,
 } from "firebase/auth";
 import app from "../firebase/firebase.confiq";
 import usePublicApi from "../hooks/usePublicApi";
@@ -35,6 +36,11 @@ const AuthProviders = ({ children }) => {
     const logOutUser = () => {
         setLoading(true);
         return signOut(auth);
+    };
+
+    const resetUserPassword = (email) => {
+        setLoading(true);
+        return sendPasswordResetEmail(auth, email);
     };
 
     const loginWithGoogle = () => {
@@ -72,6 +78,7 @@ const AuthProviders = ({ children }) => {
         loginUser,
         logOutUser,
         loginWithGoogle,
+        resetUserPassword,
     };
     return (
         <USER_CONTEXT.Provider value={authInfo}>

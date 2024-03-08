@@ -64,12 +64,6 @@ const Register = () => {
     };
 
     const onSubmit = async (data) => {
-        console.log(
-            data,
-            userSelectedDivision,
-            userSelectedDistrict,
-            userSelectedSubDistrict
-        );
         const password = data.password;
         const c_password = data.c_password;
         if (password !== c_password) {

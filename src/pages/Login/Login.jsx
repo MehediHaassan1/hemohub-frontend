@@ -137,28 +137,38 @@ const Login = () => {
                                             )}
                                         </label>
                                     </div>
-                                    <p
-                                        className="flex items-center gap-2 cursor-pointer w-fit mb-2"
-                                        onClick={handleShowPassword}
-                                    >
-                                        <input
-                                            id="showPassword"
-                                            type="checkbox"
-                                            checked={
-                                                showPassword ? true : false
-                                            }
-                                            className="checkbox checkbox-xs "
-                                            readOnly
-                                        />
-                                        <span
-                                            htmlFor="showPassword"
-                                            className="block text-sm font-bold text-primary"
+                                    <div className="md:flex items-center justify-between mb-2">
+                                        <p
+                                            className="flex items-center gap-2 cursor-pointer w-fit"
+                                            onClick={handleShowPassword}
                                         >
-                                            Show Password
-                                        </span>
-                                    </p>
+                                            <input
+                                                id="showPassword"
+                                                type="checkbox"
+                                                checked={
+                                                    showPassword ? true : false
+                                                }
+                                                className="checkbox checkbox-xs "
+                                                readOnly
+                                            />
+                                            <span
+                                                htmlFor="showPassword"
+                                                className="block text-sm font-bold text-primary"
+                                            >
+                                                Show Password
+                                            </span>
+                                        </p>
+                                        <p className="block text-sm font-bold text-primary">
+                                            <Link
+                                                className="link link-hover"
+                                                to="/forget-password"
+                                            >
+                                                Forget Password
+                                            </Link>
+                                        </p>
+                                    </div>
                                     <div className="relative">
-                                        <button className="bg-accent text-white rounded px-2 py-1">
+                                        <button className="bg-accent text-white rounded px-4 py-1">
                                             login
                                         </button>
                                     </div>
