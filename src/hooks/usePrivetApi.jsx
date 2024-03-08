@@ -4,7 +4,7 @@ import { USER_CONTEXT } from "../context/AuthProviders";
 import { useNavigate } from "react-router-dom";
 
 const privetApi = axios.create({
-    baseURL: "http://localhost:5000",
+    baseURL: "https://hemo-hub-1-server.onrender.com",
 });
 
 const usePrivetApi = () => {
