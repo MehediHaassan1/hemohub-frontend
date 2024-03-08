@@ -13,9 +13,6 @@ const ActionButtons = ({ role, status, handleDeleteDonation, dataId }) => {
                 <td className="space-x-2">
                     {canEditOrDelete && (
                         <div className="flex gap-2 items-center justify-center">
-                            <button>
-                                <FaEdit className="w-4 h-4"></FaEdit>
-                            </button>
                             <button onClick={handleDelete}>
                                 <FaTrash className="w-4 h-4 text-red-400"></FaTrash>
                             </button>
